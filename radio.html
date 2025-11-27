@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio - Blog Bear</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="radio.css">
+</head>
+<body>
+    <!-- ナビゲーション -->
+    <header class="site-header">
+        <!-- nav.jsで生成 -->
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="radio-main">
+        <div class="radio-header">
+            <h1 class="radio-title">📻 Radio</h1>
+            <p class="radio-description">不定期配信のラジオです</p>
+        </div>
+
+        <div class="episodes-list" id="episodesList">
+            <!-- エピソードが動的に挿入される -->
+        </div>
+    </main>
+
+    <!-- エピソード詳細モーダル -->
+    <div class="episode-modal" id="episodeModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content episode-content">
+            <button class="modal-close" id="episodeClose">×</button>
+            <div class="episode-detail" id="episodeDetail">
+                <!-- エピソード詳細が動的に挿入される -->
+            </div>
+        </div>
+    </div>
+
+    <!-- フッター -->
+    <footer class="site-footer">
+        <p>© 2025 Blog Bear - Powered by GitHub Pages</p>
+    </footer>
+
+    <script src="age-check.js"></script>
+    <script src="nav.js"></script>
+    <script src="radio.js"></script>
+</body>
+</html>

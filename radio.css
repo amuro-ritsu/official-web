@@ -1,0 +1,322 @@
+/* ===== Radio Page Styles ===== */
+
+.radio-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.radio-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.radio-title {
+    font-size: 2.5rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 10px;
+}
+
+.radio-description {
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+/* ===== Episodes List ===== */
+.episodes-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.episode-card {
+    background: linear-gradient(145deg, #fff 0%, var(--cream) 100%);
+    border-radius: var(--border-radius-lg);
+    padding: 25px;
+    box-shadow: var(--shadow-sm);
+    cursor: pointer;
+    transition: all var(--transition-normal);
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    align-items: center;
+}
+
+.episode-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+}
+
+.episode-thumbnail {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--border-radius-md);
+    object-fit: cover;
+    background: var(--biscuit-light);
+}
+
+.episode-thumbnail-placeholder {
+    width: 120px;
+    height: 120px;
+    border-radius: var(--border-radius-md);
+    background: linear-gradient(135deg, var(--milktea) 0%, var(--chocolate-light) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+}
+
+.episode-info {
+    flex: 1;
+}
+
+.episode-number {
+    display: inline-block;
+    background: var(--chocolate);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.episode-card-title {
+    font-size: 1.3rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.episode-meta {
+    display: flex;
+    gap: 15px;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+.episode-date::before {
+    content: '📅 ';
+}
+
+.episode-duration::before {
+    content: '⏱️ ';
+}
+
+.episode-topics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.episode-topic {
+    background: var(--biscuit-light);
+    color: var(--chocolate-medium);
+    padding: 4px 10px;
+    border-radius: 15px;
+    font-size: 0.85rem;
+}
+
+/* ===== Episode Modal ===== */
+.episode-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.episode-modal.active {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.episode-content {
+    max-width: 700px;
+    width: 90%;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.episode-detail {
+    padding: 10px;
+}
+
+.episode-detail-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.episode-detail-number {
+    display: inline-block;
+    background: var(--chocolate);
+    color: white;
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+
+.episode-detail-title {
+    font-size: 1.6rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 10px;
+}
+
+.episode-detail-meta {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* ===== Audio Player ===== */
+.audio-player-container {
+    background: linear-gradient(135deg, var(--chocolate) 0%, var(--chocolate-dark) 100%);
+    border-radius: var(--border-radius-lg);
+    padding: 25px;
+    margin: 25px 0;
+}
+
+.audio-player-label {
+    color: var(--cream);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.audio-player {
+    width: 100%;
+    height: 50px;
+    border-radius: 25px;
+}
+
+.audio-player::-webkit-media-controls-panel {
+    background: var(--cream);
+}
+
+/* ===== Topics Section ===== */
+.episode-topics-section {
+    margin: 25px 0;
+}
+
+.episode-topics-title {
+    font-size: 1.1rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.episode-topics-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.episode-topic-tag {
+    background: linear-gradient(135deg, var(--milktea-light) 0%, var(--biscuit) 100%);
+    color: var(--chocolate-dark);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+/* ===== Description Section ===== */
+.episode-description-section {
+    margin: 25px 0;
+}
+
+.episode-description-title {
+    font-size: 1.1rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.episode-description-text {
+    color: var(--text-color);
+    line-height: 1.8;
+    white-space: pre-line;
+}
+
+/* ===== Empty State ===== */
+.episodes-empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.episodes-empty-icon {
+    font-size: 4rem;
+    margin-bottom: 15px;
+}
+
+.episodes-empty-text {
+    font-size: 1.1rem;
+}
+
+/* ===== Loading ===== */
+.episodes-loading {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+}
+
+.episodes-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--biscuit-light);
+    border-top-color: var(--chocolate);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 15px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 600px) {
+    .radio-title {
+        font-size: 2rem;
+    }
+    
+    .episode-card {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    
+    .episode-thumbnail,
+    .episode-thumbnail-placeholder {
+        width: 100%;
+        height: 150px;
+        margin: 0 auto;
+    }
+    
+    .episode-meta {
+        justify-content: center;
+    }
+    
+    .episode-topics {
+        justify-content: center;
+    }
+    
+    .episode-detail-meta {
+        flex-direction: column;
+        gap: 5px;
+    }
+}
