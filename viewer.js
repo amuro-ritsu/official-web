@@ -213,7 +213,7 @@ function renderArticles() {
                     <p class="article-excerpt">${escapeHtml(excerpt)}</p>
                     <div class="article-meta">
                         <span class="article-date">${formatDate(article.createdAt)}</span>
-                        <span class="article-reading-time">約${readingTime}分</span>
+                        <span class="article-time">${formatTime(article.createdAt)}</span>
                     </div>
                 </div>
             </div>
@@ -428,7 +428,7 @@ function openArticle(id) {
             <h1 class="article-detail-title">${escapeHtml(article.title)}</h1>
             <div class="article-detail-meta">
                 <span class="article-date">${formatDate(article.createdAt)}</span>
-                <span class="article-reading-time">約${readingTime}分で読めます</span>
+                <span class="article-time">${formatTime(article.createdAt)}</span>
             </div>
         </div>
         ${thumbnailHtml}
@@ -595,6 +595,14 @@ function formatDate(dateString) {
     const month = date.getMonth() + 1;
     const day = date.getDate();
     return `${year}年${month}月${day}日`;
+}
+
+// 時間フォーマット
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
 }
 
 // 抜粋を抽出

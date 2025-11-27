@@ -552,8 +552,8 @@ body::before {
     content: '📅 ';
 }
 
-.article-reading-time::before {
-    content: '⏱️ ';
+.article-time::before {
+    content: '🕐 ';
 }
 
 /* ===== Pagination ===== */
