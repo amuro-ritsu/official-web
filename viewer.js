@@ -170,7 +170,7 @@ function renderArticles() {
     } else if (searchQuery) {
         pageTitle.innerHTML = `🔍 "${searchQuery}" の検索結果`;
     } else {
-        pageTitle.innerHTML = '📝 すべての記事';
+        pageTitle.innerHTML = 'すべての記事';
     }
     
     // 記事がない場合
