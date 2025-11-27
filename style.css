@@ -199,6 +199,7 @@ body::before {
     background-repeat: no-repeat;
     background-position: center;
     animation: bearBounce 2s ease-in-out infinite;
+    display: block;
 }
 
 .logo-icon span {
