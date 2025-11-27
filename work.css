@@ -1,0 +1,359 @@
+/* ===== Work Page Styles ===== */
+
+.work-main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.work-container {
+    background: linear-gradient(145deg, #fff 0%, var(--cream) 100%);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 2px solid var(--biscuit-light);
+    overflow: hidden;
+}
+
+/* ヘッダー */
+.work-header {
+    background: linear-gradient(135deg, var(--chocolate-dark) 0%, var(--chocolate-medium) 100%);
+    padding: 40px;
+    text-align: center;
+    color: white;
+}
+
+.work-title {
+    font-size: 2rem;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.work-title-icon {
+    font-size: 2.2rem;
+}
+
+.work-subtitle {
+    opacity: 0.9;
+    font-size: 1rem;
+}
+
+/* セクション */
+.work-section {
+    padding: 40px;
+    border-bottom: 2px dashed var(--biscuit-light);
+}
+
+.work-section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 25px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-icon {
+    font-size: 1.6rem;
+}
+
+/* 料金カテゴリ */
+.price-category {
+    margin-bottom: 30px;
+}
+
+.price-category:last-child {
+    margin-bottom: 0;
+}
+
+.category-title {
+    font-size: 1.1rem;
+    color: var(--chocolate-medium);
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--milktea-light);
+}
+
+/* 料金カード */
+.price-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.price-card {
+    background: white;
+    border: 2px solid var(--biscuit-light);
+    border-radius: var(--border-radius-md);
+    padding: 20px;
+    transition: all var(--transition-fast);
+}
+
+.price-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--milktea);
+}
+
+.price-card.wide {
+    grid-column: 1 / -1;
+}
+
+.price-card-header h4 {
+    font-size: 1.1rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 5px;
+}
+
+.price-desc {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+.price-card-price {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px dashed var(--biscuit-light);
+}
+
+.price-amount {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--chocolate-light);
+}
+
+.price-note {
+    margin-top: 20px;
+    padding: 15px;
+    background: var(--milktea-light);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+/* 依頼の流れ */
+.flow-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.flow-step {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: white;
+    border: 2px solid var(--biscuit-light);
+    border-radius: var(--border-radius-md);
+    padding: 20px 30px;
+    width: 100%;
+    max-width: 500px;
+    transition: all var(--transition-fast);
+}
+
+.flow-step:hover {
+    border-color: var(--milktea);
+    transform: scale(1.02);
+}
+
+.flow-number {
+    width: 45px;
+    height: 45px;
+    background: linear-gradient(135deg, var(--chocolate-light) 0%, var(--chocolate-medium) 100%);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    flex-shrink: 0;
+}
+
+.flow-content h4 {
+    font-size: 1.05rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 3px;
+}
+
+.flow-content p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.flow-arrow {
+    color: var(--milktea);
+    font-size: 1.2rem;
+}
+
+/* 実績 */
+.portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.portfolio-card {
+    background: white;
+    border: 2px solid var(--biscuit-light);
+    border-radius: var(--border-radius-md);
+    padding: 25px;
+    text-align: center;
+    transition: all var(--transition-fast);
+}
+
+.portfolio-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+    border-color: var(--milktea);
+}
+
+.portfolio-icon {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.portfolio-card h4 {
+    font-size: 1.1rem;
+    color: var(--chocolate-dark);
+    margin-bottom: 10px;
+}
+
+.portfolio-card p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.portfolio-card ul {
+    list-style: none;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.portfolio-card ul li::before {
+    content: '• ';
+    color: var(--milktea);
+}
+
+/* お問い合わせフォーム */
+.contact-form {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    color: var(--chocolate-medium);
+    margin-bottom: 8px;
+}
+
+.required {
+    color: var(--accent-pink);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 14px 18px;
+    border: 2px solid var(--biscuit-light);
+    border-radius: var(--border-radius-sm);
+    font-size: 1rem;
+    font-family: inherit;
+    background: white;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--milktea);
+    box-shadow: 0 0 0 4px rgba(212, 165, 116, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.submit-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--chocolate-light) 0%, var(--chocolate-medium) 100%);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius-md);
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.submit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    background: linear-gradient(135deg, var(--chocolate-medium) 0%, var(--chocolate-dark) 100%);
+}
+
+.submit-btn:active {
+    transform: translateY(0);
+}
+
+/* レスポンシブ */
+@media (max-width: 600px) {
+    .work-header {
+        padding: 30px 20px;
+    }
+    
+    .work-title {
+        font-size: 1.5rem;
+    }
+    
+    .work-section {
+        padding: 30px 20px;
+    }
+    
+    .section-title {
+        font-size: 1.25rem;
+    }
+    
+    .price-cards {
+        grid-template-columns: 1fr;
+    }
+    
+    .flow-step {
+        padding: 15px 20px;
+    }
+    
+    .flow-number {
+        width: 38px;
+        height: 38px;
+        font-size: 1.1rem;
+    }
+    
+    .portfolio-grid {
+        grid-template-columns: 1fr;
+    }
+}
