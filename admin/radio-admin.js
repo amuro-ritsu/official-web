@@ -279,7 +279,7 @@ function renderTopics() {
 // ===== エピソード公開 =====
 async function publishEpisode() {
     const title = document.getElementById('episodeTitle').value.trim();
-    const driveFileId = document.getElementById('driveFileId').value.trim();
+    const audioUrl = document.getElementById('audioUrl').value.trim();
     const duration = document.getElementById('episodeDuration').value.trim();
     const description = document.getElementById('episodeDescription').value.trim();
     const editingId = document.getElementById('editingId').value;
@@ -289,8 +289,8 @@ async function publishEpisode() {
         return;
     }
     
-    if (!driveFileId) {
-        showToast('GoogleドライブファイルIDを入力してください', 'error');
+    if (!audioUrl) {
+        showToast('Dropbox共有リンクを入力してください', 'error');
         return;
     }
     
@@ -305,7 +305,7 @@ async function publishEpisode() {
     const episode = {
         id: editingId || Date.now().toString(),
         title,
-        driveFileId,
+        audioUrl,
         duration,
         description,
         topics: [...topics],
@@ -336,7 +336,7 @@ async function publishEpisode() {
 // ===== エディタクリア =====
 function clearEditor() {
     document.getElementById('episodeTitle').value = '';
-    document.getElementById('driveFileId').value = '';
+    document.getElementById('audioUrl').value = '';
     document.getElementById('episodeDuration').value = '';
     document.getElementById('episodeDescription').value = '';
     document.getElementById('editingId').value = '';
@@ -353,7 +353,7 @@ function editEpisode(id) {
     if (!episode) return;
     
     document.getElementById('episodeTitle').value = episode.title;
-    document.getElementById('driveFileId').value = episode.driveFileId || '';
+    document.getElementById('audioUrl').value = episode.audioUrl || '';
     document.getElementById('episodeDuration').value = episode.duration || '';
     document.getElementById('episodeDescription').value = episode.description || '';
     document.getElementById('editingId').value = episode.id;
