@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <defs>
+    <linearGradient id="bearGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8b5a2b"/>
+      <stop offset="100%" style="stop-color:#5c3a21"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- 背景 -->
+  <circle cx="100" cy="100" r="95" fill="#faf3eb"/>
+  
+  <!-- 耳 -->
+  <circle cx="45" cy="45" r="25" fill="url(#bearGrad)"/>
+  <circle cx="155" cy="45" r="25" fill="url(#bearGrad)"/>
+  <circle cx="45" cy="45" r="15" fill="#d4a574"/>
+  <circle cx="155" cy="45" r="15" fill="#d4a574"/>
+  
+  <!-- 顔 -->
+  <ellipse cx="100" cy="110" rx="70" ry="65" fill="url(#bearGrad)"/>
+  
+  <!-- マズル -->
+  <ellipse cx="100" cy="130" rx="35" ry="30" fill="#e8cdb5"/>
+  
+  <!-- 鼻 -->
+  <ellipse cx="100" cy="120" rx="12" ry="10" fill="#3d2314"/>
+  
+  <!-- 目 -->
+  <circle cx="70" cy="95" r="10" fill="#3d2314"/>
+  <circle cx="130" cy="95" r="10" fill="#3d2314"/>
+  <circle cx="73" cy="92" r="4" fill="white"/>
+  <circle cx="133" cy="92" r="4" fill="white"/>
+  
+  <!-- 口 -->
+  <path d="M 90 140 Q 100 150 110 140" stroke="#3d2314" stroke-width="3" fill="none"/>
+  
+  <!-- 頬 -->
+  <circle cx="55" cy="115" r="12" fill="#e8a0a0" opacity="0.5"/>
+  <circle cx="145" cy="115" r="12" fill="#e8a0a0" opacity="0.5"/>
+</svg>

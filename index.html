@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安室りつ OFFICIAL</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- ヘッダーバナー -->
+    <div class="header-banner" id="headerBanner">
+        <img src="" alt="ヘッダー画像" id="headerBannerImg">
+        <video id="headerBannerVideo" muted loop playsinline></video>
+        <div class="header-banner-overlay"></div>
+        <div class="header-banner-content">
+            <h1 class="banner-title" id="bannerTitle">安室りつ OFFICIAL</h1>
+            <p class="banner-subtitle" id="bannerSubtitle">Vクリエイターの「安室りつ」の公式ＨＰです。</p>
+    　　     <p class="banner-subtitle" id="bannerSubtitle">成人向けを取り扱いますので、未成年の閲覧はご遠慮ください。</p>
+        </div>
+    </div>
+
+    <!-- ナビゲーション -->
+    <header class="site-header">
+        <div class="header-inner">
+            <a href="index.html" class="site-logo">
+                <span class="logo-icon"></span>
+                <span class="logo-text">安室りつ OFFICIAL</span>
+            </a>
+            <nav class="site-nav">
+                <a href="index.html" class="nav-link active">ホーム</a>
+                <a href="#" class="nav-link" id="categoriesBtn">カテゴリ</a>
+                <a href="#" class="nav-link" id="aboutBtn">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="main-content">
+        <!-- サイドバー -->
+        <aside class="sidebar">
+            <div class="profile-card">
+                <img src="default-icon.png" alt="プロフィール" class="profile-icon" id="profileIcon">
+                <h2 class="profile-name" id="profileName">ブログ管理者</h2>
+                <p class="profile-bio" id="profileBio">ブログの説明文がここに入ります。</p>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">カテゴリ</h3>
+                <ul class="category-list" id="categoryList">
+                    <!-- カテゴリが動的に挿入される -->
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">最近の記事</h3>
+                <ul class="recent-list" id="recentList">
+                    <!-- 最近の記事が動的に挿入される -->
+                </ul>
+            </div>
+        </aside>
+
+        <!-- 記事一覧 -->
+        <div class="articles-container">
+            <div class="articles-header">
+                <h1 class="page-title" id="pageTitle">すべての記事</h1>
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="記事を検索...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+
+            <div class="articles-list" id="articlesList">
+                <!-- 記事カードが動的に挿入される -->
+            </div>
+
+            <div class="pagination" id="pagination">
+                <!-- ページネーションが動的に挿入される -->
+            </div>
+        </div>
+    </main>
+
+    <!-- 記事詳細モーダル -->
+    <div class="article-modal" id="articleModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="modalClose">×</button>
+            <article class="article-detail" id="articleDetail">
+                <!-- 記事詳細が動的に挿入される -->
+            </article>
+        </div>
+    </div>
+
+    <!-- カテゴリモーダル -->
+    <div class="categories-modal" id="categoriesModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content categories-content">
+            <button class="modal-close" id="categoriesClose">×</button>
+            <h2>カテゴリ一覧</h2>
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- カテゴリが動的に挿入される -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Aboutモーダル -->
+    <div class="about-modal" id="aboutModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content about-content">
+            <button class="modal-close" id="aboutClose">×</button>
+            <div class="about-detail" id="aboutDetail">
+                <!-- About情報が動的に挿入される -->
+            </div>
+        </div>
+    </div>
+
+    <!-- フッター -->
+    <footer class="site-footer">
+        <p>© 2025 Blog Bear - Powered by GitHub Pages</p>
+    </footer>
+
+    <script src="config.js"></script>
+    <script src="viewer.js"></script>
+</body>
+</html>
