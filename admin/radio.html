@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ラジオ管理 - Blog Bear Admin</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="admin-style.css">
+    <link rel="stylesheet" href="radio-admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div class="header-inner">
+            <a href="../index.html" class="admin-logo">
+                <span class="logo-icon">📻</span>
+                <span class="logo-text">Radio Admin</span>
+            </a>
+            <nav class="admin-nav">
+                <button class="nav-btn active" data-tab="editor">🎙️ エピソード作成</button>
+                <button class="nav-btn" data-tab="episodes">📋 エピソード一覧</button>
+                <button class="nav-btn" data-tab="settings">⚙️ 設定</button>
+                <a href="index.html" class="nav-btn nav-link">📝 ブログ管理</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <!-- エピソード作成 -->
+        <section class="admin-section" id="editorSection">
+            <div class="editor-container radio-editor">
+                <div class="editor-sidebar">
+                    <div class="editor-field">
+                        <label>GoogleドライブファイルID <span class="required">*</span></label>
+                        <input type="text" id="driveFileId" placeholder="1ABC...xyz">
+                        <span class="field-hint">共有リンクの /d/ と /view の間の文字列</span>
+                    </div>
+                    
+                    <div class="editor-field">
+                        <label>再生時間</label>
+                        <input type="text" id="episodeDuration" placeholder="例: 30:00">
+                    </div>
+                    
+                    <div class="editor-field">
+                        <label>サムネイル画像</label>
+                        <div class="thumbnail-preview" id="thumbnailPreview">
+                            <span>クリックして画像を選択</span>
+                        </div>
+                        <input type="file" id="thumbnailInput" accept="image/*" hidden>
+                        <button class="btn-secondary" id="removeThumbnail" style="display: none;">サムネイルを削除</button>
+                    </div>
+                    
+                    <div class="editor-actions">
+                        <button class="btn-primary" id="publishBtn">🎙️ 公開する</button>
+                        <button class="btn-danger" id="clearBtn">🗑️ クリア</button>
+                    </div>
+                </div>
+                
+                <div class="editor-main">
+                    <div class="editor-field">
+                        <input type="text" id="episodeTitle" class="title-input" placeholder="エピソードタイトルを入力...">
+                    </div>
+                    
+                    <div class="editor-field">
+                        <label>トークテーマ</label>
+                        <div class="topics-container" id="topicsContainer">
+                            <div class="topics-list" id="topicsList"></div>
+                            <div class="topic-input-wrapper">
+                                <input type="text" id="topicInput" placeholder="テーマを入力してEnter">
+                                <button class="btn-secondary" id="addTopicBtn">追加</button>
+                            </div>
+                        </div>
+                        <span class="field-hint">テーマを入力してEnterで追加</span>
+                    </div>
+                    
+                    <div class="editor-field">
+                        <label>説明文</label>
+                        <textarea id="episodeDescription" rows="6" placeholder="エピソードの説明を入力..."></textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="hidden" id="editingId" value="">
+        </section>
+
+        <!-- エピソード一覧 -->
+        <section class="admin-section" id="episodesSection" style="display: none;">
+            <div class="episodes-controls">
+                <div class="search-box">
+                    <input type="text" id="adminSearchInput" placeholder="エピソードを検索...">
+                    <span class="search-icon">🔍</span>
+                </div>
+            </div>
+            
+            <div class="admin-episodes-list" id="adminEpisodesList">
+                <!-- エピソード一覧が動的に挿入される -->
+            </div>
+        </section>
+
+        <!-- 設定 -->
+        <section class="admin-section" id="settingsSection" style="display: none;">
+            <div class="settings-group">
+                <h2 class="settings-title">🔗 GitHub設定</h2>
+                <div class="settings-card">
+                    <div class="settings-field">
+                        <label>GitHubユーザー名</label>
+                        <input type="text" id="githubUsername" placeholder="username">
+                    </div>
+                    <div class="settings-field">
+                        <label>リポジトリ名</label>
+                        <input type="text" id="githubRepo" placeholder="repository">
+                    </div>
+                    <div class="settings-field">
+                        <label>ブランチ名</label>
+                        <input type="text" id="githubBranch" placeholder="main" value="main">
+                    </div>
+                    <div class="settings-field">
+                        <label>アクセストークン</label>
+                        <input type="password" id="githubToken" placeholder="ghp_xxxx">
+                        <span class="field-hint">repo権限が必要です</span>
+                    </div>
+                    <button class="btn-primary" id="saveGithubSettings">💾 保存</button>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h2 class="settings-title">📻 ラジオページ設定</h2>
+                <div class="settings-card">
+                    <div class="settings-field">
+                        <label>ラジオタイトル</label>
+                        <input type="text" id="radioTitle" placeholder="Radio">
+                    </div>
+                    <div class="settings-field">
+                        <label>説明文</label>
+                        <input type="text" id="radioDescription" placeholder="不定期配信のラジオです">
+                    </div>
+                    <button class="btn-primary" id="saveRadioSettings">💾 保存</button>
+                </div>
+            </div>
+            
+            <div class="settings-group">
+                <h2 class="settings-title">📦 データ管理</h2>
+                <div class="settings-card">
+                    <div class="data-actions">
+                        <button class="btn-secondary" id="refreshDataBtn">🔄 GitHubから更新</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script src="radio-admin.js"></script>
+</body>
+</html>
