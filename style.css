@@ -403,7 +403,15 @@ body::before {
 }
 
 .page-title::before {
-    content: '📝';
+    content: '';
+    display: inline-block;
+    width: 32px;
+    height: 32px;
+    background-image: url('user-icon.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    vertical-align: middle;
 }
 
 .search-box {
