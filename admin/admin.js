@@ -549,23 +549,14 @@ function loadBannerSettings() {
     const saved = localStorage.getItem('blogBearBannerSettings');
     if (saved) {
         const banner = JSON.parse(saved);
-        siteSettings.headerBanner = { ...siteSettings.headerBanner, ...banner };
+        // 画像・動画以外の設定を読み込み
+        siteSettings.headerBanner.title = banner.title || 'Blog Bear';
+        siteSettings.headerBanner.subtitle = banner.subtitle || 'GitHubで更新できるブログ';
+        siteSettings.headerBanner.showText = banner.showText !== false;
         
-        if (banner.image) {
-            document.getElementById('bannerPreview').innerHTML = `<img src="${banner.image}" alt="ヘッダー">`;
-            document.getElementById('removeBanner').style.display = 'block';
-        }
-        if (banner.video) {
-            document.getElementById('videoPreview').innerHTML = `
-                <video muted loop playsinline autoplay>
-                    <source src="${banner.video}">
-                </video>
-            `;
-            document.getElementById('removeVideo').style.display = 'block';
-        }
-        document.getElementById('showBannerText').checked = banner.showText !== false;
-        document.getElementById('bannerTitle').value = banner.title || '';
-        document.getElementById('bannerSubtitle').value = banner.subtitle || '';
+        document.getElementById('showBannerText').checked = siteSettings.headerBanner.showText;
+        document.getElementById('bannerTitle').value = siteSettings.headerBanner.title;
+        document.getElementById('bannerSubtitle').value = siteSettings.headerBanner.subtitle;
     }
 }
 
@@ -661,8 +652,12 @@ async function saveBannerSettings() {
     siteSettings.headerBanner.subtitle = document.getElementById('bannerSubtitle').value.trim();
     siteSettings.headerBanner.showText = document.getElementById('showBannerText').checked;
     
-    // ローカル保存
-    localStorage.setItem('blogBearBannerSettings', JSON.stringify(siteSettings.headerBanner));
+    // ローカル保存（画像・動画は除外して保存）
+    localStorage.setItem('blogBearBannerSettings', JSON.stringify({
+        title: siteSettings.headerBanner.title,
+        subtitle: siteSettings.headerBanner.subtitle,
+        showText: siteSettings.headerBanner.showText
+    }));
     
     // GitHubにpush
     const success = await pushSiteSettings();
@@ -680,7 +675,9 @@ async function pushSiteSettings() {
     }
     
     try {
-        // 最新のSHAを取得
+        // 最新のSHAを取得（ファイルが存在する場合）
+        let currentSettingsSha = null;
+        
         const getResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/site-settings.json?ref=${githubConfig.branch}`, {
             headers: {
                 'Authorization': `token ${githubConfig.token}`,
@@ -690,10 +687,9 @@ async function pushSiteSettings() {
         
         if (getResponse.ok) {
             const getData = await getResponse.json();
-            settingsSha = getData.sha;
-        } else if (getResponse.status !== 404) {
-            throw new Error('SHA取得失敗');
+            currentSettingsSha = getData.sha;
         }
+        // 404の場合は新規作成なのでSHAは不要
         
         // プロフィール設定を統合
         const profile = JSON.parse(localStorage.getItem('blogBearProfile') || '{}');
@@ -723,8 +719,9 @@ async function pushSiteSettings() {
             branch: githubConfig.branch
         };
         
-        if (settingsSha) {
-            pushBody.sha = settingsSha;
+        // ファイルが存在する場合のみSHAを追加
+        if (currentSettingsSha) {
+            pushBody.sha = currentSettingsSha;
         }
         
         const pushResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/site-settings.json`, {
@@ -743,6 +740,7 @@ async function pushSiteSettings() {
             return true;
         } else {
             const errorData = await pushResponse.json();
+            console.error('Push failed:', errorData);
             throw new Error(errorData.message || 'プッシュ失敗');
         }
     } catch (error) {
@@ -1074,7 +1072,12 @@ async function syncSiteSettings() {
                 document.getElementById('bannerTitle').value = siteSettings.headerBanner.title || '';
                 document.getElementById('bannerSubtitle').value = siteSettings.headerBanner.subtitle || '';
                 
-                localStorage.setItem('blogBearBannerSettings', JSON.stringify(siteSettings.headerBanner));
+                // localStorageには画像・動画を除外して保存（容量制限対策）
+                localStorage.setItem('blogBearBannerSettings', JSON.stringify({
+                    title: siteSettings.headerBanner.title || '',
+                    subtitle: siteSettings.headerBanner.subtitle || '',
+                    showText: siteSettings.headerBanner.showText
+                }));
             }
             
             if (siteSettings.profile) {
