@@ -115,15 +115,19 @@ function openEpisode(id) {
     );
     const episodeNumber = sortedEpisodes.length - sortedEpisodes.findIndex(e => e.id === id);
     
-    // GoogleドライブのURLを生成
+    // DropboxのURLを変換して再生
     let audioPlayerHtml = '';
-    if (episode.driveFileId) {
-        const audioUrl = `https://drive.google.com/uc?export=download&id=${episode.driveFileId}`;
+    if (episode.audioUrl) {
+        // dl=0 を dl=1 に変換
+        let audioSrc = episode.audioUrl.replace('dl=0', 'dl=1');
+        // www.dropbox.com を dl.dropboxusercontent.com に変換（より確実）
+        audioSrc = audioSrc.replace('www.dropbox.com', 'dl.dropboxusercontent.com');
+        
         audioPlayerHtml = `
             <div class="audio-player-container">
                 <div class="audio-player-label">🎧 再生</div>
                 <audio class="audio-player" controls>
-                    <source src="${audioUrl}" type="audio/mpeg">
+                    <source src="${audioSrc}" type="audio/mpeg">
                     お使いのブラウザは音声再生に対応していません。
                 </audio>
             </div>
