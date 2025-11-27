@@ -353,6 +353,7 @@ async function publishArticle() {
     const category = document.getElementById('articleCategory').value;
     const tagsInput = document.getElementById('articleTags').value;
     const isDraft = document.getElementById('isDraft').checked;
+    const isAdult = document.getElementById('isAdult').checked;
     const editingId = document.getElementById('editingId').value;
     
     if (!title) {
@@ -384,6 +385,7 @@ async function publishArticle() {
         tags,
         thumbnail,
         isDraft,
+        isAdult,
         createdAt: editingId ? (articles.find(a => a.id === editingId)?.createdAt || new Date().toISOString()) : new Date().toISOString(),
         updatedAt: new Date().toISOString()
     };
@@ -413,6 +415,7 @@ function clearEditor() {
     document.getElementById('articleCategory').value = '日記';
     document.getElementById('articleTags').value = '';
     document.getElementById('isDraft').checked = false;
+    document.getElementById('isAdult').checked = false;
     document.getElementById('editingId').value = '';
     document.getElementById('thumbnailInput').value = '';
     document.getElementById('thumbnailPreview').innerHTML = '<span>クリックして画像を選択</span>';
@@ -430,6 +433,7 @@ function editArticle(id) {
     document.getElementById('articleCategory').value = article.category;
     document.getElementById('articleTags').value = (article.tags || []).join(', ');
     document.getElementById('isDraft').checked = article.isDraft || false;
+    document.getElementById('isAdult').checked = article.isAdult || false;
     document.getElementById('editingId').value = article.id;
     
     if (article.thumbnail) {

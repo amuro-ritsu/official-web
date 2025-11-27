@@ -67,6 +67,14 @@
                         </label>
                     </div>
                     
+                    <div class="editor-field">
+                        <label class="adult-label">
+                            <input type="checkbox" id="isAdult">
+                            🔞 成人向けコンテンツ
+                        </label>
+                        <span class="field-hint">チェックすると閲覧時に警告が表示され、画像にぼかしがかかります</span>
+                    </div>
+                    
                     <div class="editor-actions">
                         <button class="btn-primary" id="publishBtn">🚀 公開する</button>
                         <button class="btn-secondary" id="previewBtn">👁️ プレビュー</button>
@@ -187,21 +195,21 @@
                     </div>
                     
                     <div class="settings-field">
-    <label>バナータイトル</label>
-    <input type="text" id="bannerTitle" placeholder="Blog Bear">
-</div>
-
-<div class="settings-field">
-    <label>タイトルリンクURL</label>
-    <input type="url" id="bannerTitleUrl" placeholder="https://example.com">
-    <span class="field-hint">タイトルをクリックした時に飛ぶURL（空欄でリンクなし）</span>
-</div>
-
-<div class="settings-field">
-    <label>バナーサブタイトル（説明文）</label>
-    <textarea id="bannerSubtitle" placeholder="GitHubで更新できるブログ" rows="3"></textarea>
-    <span class="field-hint">改行可能です</span>
-</div>
+                        <label>バナータイトル</label>
+                        <input type="text" id="bannerTitle" placeholder="Blog Bear">
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>タイトルリンクURL</label>
+                        <input type="url" id="bannerTitleUrl" placeholder="https://example.com">
+                        <span class="field-hint">タイトルをクリックした時に飛ぶURL（空欄でリンクなし）</span>
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>バナーサブタイトル（説明文）</label>
+                        <textarea id="bannerSubtitle" placeholder="GitHubで更新できるブログ" rows="3"></textarea>
+                        <span class="field-hint">改行可能です</span>
+                    </div>
                     
                     <button class="btn-primary" id="saveBannerSettings">ヘッダーバナー設定を保存</button>
                 </div>

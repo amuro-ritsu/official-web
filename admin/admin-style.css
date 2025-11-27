@@ -925,3 +925,13 @@
         flex-direction: column;
     }
 }
+
+/* ===== Adult Content Checkbox ===== */
+.adult-label {
+    color: var(--chocolate-medium);
+    font-weight: 600;
+}
+
+.adult-label input[type="checkbox"] {
+    margin-right: 8px;
+}
