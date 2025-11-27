@@ -534,8 +534,8 @@ body::before {
     content: '📅 ';
 }
 
-.article-reading-time::before {
-    content: '⏱️ ';
+.article-time::before {
+    content: '投稿時間 ';
 }
 
 /* ===== Pagination ===== */
