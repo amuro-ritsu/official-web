@@ -571,3 +571,12 @@ function calculateReadingTime(content) {
     const minutes = Math.ceil(charCount / wordsPerMinute);
     return Math.max(1, minutes);
 }
+document.addEventListener('DOMContentLoaded', () => {
+    const logoLink = document.querySelector('.logo-text-link');
+    if (logoLink) {
+        const text = logoLink.textContent;
+        logoLink.innerHTML = text.split('').map((char, i) => 
+            `<span style="animation-delay: ${i * 0.1}s">${char}</span>`
+        ).join('');
+    }
+});
