@@ -1,3 +1,37 @@
 {
-  "articles": []
+  "articles": [
+    {
+      "id": "1764273155391",
+      "title": "テストです",
+      "content": "## こんな感じ\nどうだろう",
+      "category": "日記",
+      "tags": [],
+      "thumbnail": "",
+      "isDraft": false,
+      "createdAt": "2025-11-27T19:52:35.391Z",
+      "updatedAt": "2025-11-27T19:52:35.391Z"
+    },
+    {
+      "id": "1764273138651",
+      "title": "テストです",
+      "content": "## こんな感じ\nどうだろう",
+      "category": "日記",
+      "tags": [],
+      "thumbnail": "",
+      "isDraft": false,
+      "createdAt": "2025-11-27T19:52:18.651Z",
+      "updatedAt": "2025-11-27T19:52:18.651Z"
+    },
+    {
+      "id": "1764273132863",
+      "title": "テストです",
+      "content": "## こんな感じ\nどうだろう",
+      "category": "日記",
+      "tags": [],
+      "thumbnail": "",
+      "isDraft": false,
+      "createdAt": "2025-11-27T19:52:12.863Z",
+      "updatedAt": "2025-11-27T19:52:12.863Z"
+    }
+  ]
 }
