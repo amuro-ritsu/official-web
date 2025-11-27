@@ -5,12 +5,19 @@ let currentSha = null;
 let configSha = null;
 let settingsSha = null;
 
+// 同期制御
+let isSyncing = false;
+let lastSyncTime = 0;
+let pendingSync = false;
+let autoSyncInterval = null;
+
 // サイト設定
 let siteSettings = {
     headerBanner: {
         image: '',
         video: '',
         title: 'Blog Bear',
+        titleUrl: '',
         subtitle: 'GitHubで更新できるブログ',
         showText: true
     },
@@ -45,7 +52,54 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCategorySettings();
     initEventListeners();
     syncWithGithub();
+    startAutoSync();
 });
+
+// ===== 自動同期開始 =====
+function startAutoSync() {
+    // 10秒ごとに自動同期
+    if (autoSyncInterval) {
+        clearInterval(autoSyncInterval);
+    }
+    autoSyncInterval = setInterval(() => {
+        if (pendingSync && !isSyncing) {
+            performSync();
+        }
+    }, 10000);
+}
+
+// ===== 同期リクエスト =====
+function requestSync() {
+    pendingSync = true;
+    // すぐに同期を試みる
+    if (!isSyncing) {
+        performSync();
+    }
+}
+
+// ===== 同期実行 =====
+async function performSync() {
+    if (isSyncing) return;
+    
+    // 前回の同期から2秒以内なら少し待つ
+    const now = Date.now();
+    if (now - lastSyncTime < 2000) {
+        setTimeout(() => performSync(), 2000);
+        return;
+    }
+    
+    isSyncing = true;
+    lastSyncTime = now;
+    
+    const success = await pushToGithub();
+    
+    isSyncing = false;
+    
+    if (success) {
+        pendingSync = false;
+        showToast('保存完了！', 'success');
+    }
+}
 
 // ===== イベントリスナー =====
 function initEventListeners() {
@@ -344,13 +398,12 @@ async function publishArticle() {
         articles.unshift(article);
     }
     
-    // GitHubに保存
-    const success = await pushToGithub();
+    // 即座にUIをクリア（ユーザー体験向上）
+    showToast(isDraft ? '下書きを保存中...' : '記事を公開中...', 'success');
+    clearEditor();
     
-    if (success) {
-        showToast(isDraft ? '下書きを保存しました' : '記事を公開しました', 'success');
-        clearEditor();
-    }
+    // バックグラウンドでGitHubに同期
+    requestSync();
 }
 
 // ===== エディタクリア =====
@@ -395,12 +448,12 @@ async function deleteArticle(id) {
     
     articles = articles.filter(a => a.id !== id);
     
-    const success = await pushToGithub();
+    // 即座にUI更新
+    renderAdminArticles();
+    showToast('記事を削除中...', 'success');
     
-    if (success) {
-        showToast('記事を削除しました', 'success');
-        renderAdminArticles();
-    }
+    // バックグラウンドで同期
+    requestSync();
 }
 
 // ===== プレビューモーダル =====
@@ -551,11 +604,13 @@ function loadBannerSettings() {
         const banner = JSON.parse(saved);
         // 画像・動画以外の設定を読み込み
         siteSettings.headerBanner.title = banner.title || 'Blog Bear';
+        siteSettings.headerBanner.titleUrl = banner.titleUrl || '';
         siteSettings.headerBanner.subtitle = banner.subtitle || 'GitHubで更新できるブログ';
         siteSettings.headerBanner.showText = banner.showText !== false;
         
         document.getElementById('showBannerText').checked = siteSettings.headerBanner.showText;
         document.getElementById('bannerTitle').value = siteSettings.headerBanner.title;
+        document.getElementById('bannerTitleUrl').value = siteSettings.headerBanner.titleUrl;
         document.getElementById('bannerSubtitle').value = siteSettings.headerBanner.subtitle;
     }
 }
@@ -649,12 +704,14 @@ function removeVideo() {
 
 async function saveBannerSettings() {
     siteSettings.headerBanner.title = document.getElementById('bannerTitle').value.trim();
+    siteSettings.headerBanner.titleUrl = document.getElementById('bannerTitleUrl').value.trim();
     siteSettings.headerBanner.subtitle = document.getElementById('bannerSubtitle').value.trim();
     siteSettings.headerBanner.showText = document.getElementById('showBannerText').checked;
     
     // ローカル保存（画像・動画は除外して保存）
     localStorage.setItem('blogBearBannerSettings', JSON.stringify({
         title: siteSettings.headerBanner.title,
+        titleUrl: siteSettings.headerBanner.titleUrl,
         subtitle: siteSettings.headerBanner.subtitle,
         showText: siteSettings.headerBanner.showText
     }));
@@ -1070,11 +1127,13 @@ async function syncSiteSettings() {
                 }
                 document.getElementById('showBannerText').checked = siteSettings.headerBanner.showText !== false;
                 document.getElementById('bannerTitle').value = siteSettings.headerBanner.title || '';
+                document.getElementById('bannerTitleUrl').value = siteSettings.headerBanner.titleUrl || '';
                 document.getElementById('bannerSubtitle').value = siteSettings.headerBanner.subtitle || '';
                 
                 // localStorageには画像・動画を除外して保存（容量制限対策）
                 localStorage.setItem('blogBearBannerSettings', JSON.stringify({
                     title: siteSettings.headerBanner.title || '',
+                    titleUrl: siteSettings.headerBanner.titleUrl || '',
                     subtitle: siteSettings.headerBanner.subtitle || '',
                     showText: siteSettings.headerBanner.showText
                 }));
@@ -1115,7 +1174,7 @@ async function syncSiteSettings() {
 }
 
 // ===== GitHubにプッシュ =====
-async function pushToGithub() {
+async function pushToGithub(retryCount = 0) {
     if (!githubConfig.repo || !githubConfig.token) {
         showToast('GitHub設定が必要です', 'error');
         return false;
@@ -1124,20 +1183,21 @@ async function pushToGithub() {
     updateSyncStatus('syncing', '保存中...');
     
     try {
-        // 最新のSHAを取得
-        const getResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/articles.json?ref=${githubConfig.branch}`, {
+        // 最新のSHAを取得（毎回取得して競合を防ぐ）
+        const getResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/articles.json?ref=${githubConfig.branch}&t=${Date.now()}`, {
             headers: {
                 'Authorization': `token ${githubConfig.token}`,
                 'Accept': 'application/vnd.github.v3+json'
-            }
+            },
+            cache: 'no-store'
         });
         
+        let latestSha = null;
         if (getResponse.ok) {
             const getData = await getResponse.json();
-            currentSha = getData.sha;
-        } else if (getResponse.status !== 404) {
-            throw new Error('SHA取得失敗');
+            latestSha = getData.sha;
         }
+        // 404の場合は新規作成なのでSHAは不要
         
         // データをBase64エンコード
         const content = JSON.stringify({ articles }, null, 2);
@@ -1149,6 +1209,18 @@ async function pushToGithub() {
         });
         const base64Content = btoa(binary);
         
+        // プッシュボディ作成
+        const pushBody = {
+            message: '📝 Update articles',
+            content: base64Content,
+            branch: githubConfig.branch
+        };
+        
+        // SHAがある場合のみ追加
+        if (latestSha) {
+            pushBody.sha = latestSha;
+        }
+        
         // プッシュ
         const pushResponse = await fetch(`https://api.github.com/repos/${githubConfig.repo}/contents/articles.json`, {
             method: 'PUT',
@@ -1157,12 +1229,7 @@ async function pushToGithub() {
                 'Accept': 'application/vnd.github.v3+json',
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({
-                message: '📝 Update articles',
-                content: base64Content,
-                sha: currentSha,
-                branch: githubConfig.branch
-            })
+            body: JSON.stringify(pushBody)
         });
         
         if (pushResponse.ok) {
@@ -1170,6 +1237,11 @@ async function pushToGithub() {
             currentSha = pushData.content.sha;
             updateSyncStatus('synced', '保存完了');
             return true;
+        } else if (pushResponse.status === 409 && retryCount < 3) {
+            // 409 Conflictの場合はリトライ
+            console.log(`409 Conflict - リトライ中... (${retryCount + 1}/3)`);
+            await new Promise(resolve => setTimeout(resolve, 500));
+            return pushToGithub(retryCount + 1);
         } else {
             const errorData = await pushResponse.json();
             throw new Error(errorData.message || 'プッシュ失敗');
