@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安室りつ OFFICIAL - 管理画面</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="admin-style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+    <!-- ヘッダー -->
+    <header class="admin-header">
+        <div class="header-inner">
+            <a href="../index.html" class="site-logo">
+                <span class="logo-icon"></span>
+                <span class="logo-text">安室りつ OFFICIAL</span>
+                <span class="admin-badge">管理画面</span>
+            </a>
+            <nav class="admin-nav">
+                <button class="nav-btn active" data-tab="editor">📝 記事作成</button>
+                <button class="nav-btn" data-tab="articles">📚 記事一覧</button>
+                <button class="nav-btn" data-tab="settings">⚙️ 設定</button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- メインコンテンツ -->
+    <main class="admin-main">
+        <!-- 記事エディタ -->
+        <section class="admin-section" id="editorSection">
+            <div class="editor-container">
+                <div class="editor-sidebar">
+                    <div class="editor-field">
+                        <label>カテゴリ</label>
+                        <select id="articleCategory">
+                            <option value="日記">📝 日記</option>
+                            <option value="お知らせ">📢 お知らせ</option>
+                            <option value="技術">💻 技術</option>
+                            <option value="レビュー">⭐ レビュー</option>
+                            <option value="趣味">🎮 趣味</option>
+                            <option value="その他">📌 その他</option>
+                        </select>
+                    </div>
+                    
+                    <div class="editor-field">
+                        <label>タグ（カンマ区切り）</label>
+                        <input type="text" id="articleTags" placeholder="例: VTuber, 開発, 日常">
+                    </div>
+                    
+                    <div class="editor-field">
+                        <label>サムネイル画像</label>
+                        <div class="thumbnail-preview" id="thumbnailPreview">
+                            <span>クリックして画像を選択</span>
+                        </div>
+                        <input type="file" id="thumbnailInput" accept="image/*" hidden>
+                        <button class="btn-secondary" id="removeThumbnail" style="display: none;">サムネイルを削除</button>
+                    </div>
+                    
+                    <div class="editor-field">
+                        <label>
+                            <input type="checkbox" id="isDraft">
+                            下書きとして保存
+                        </label>
+                    </div>
+                    
+                    <div class="editor-actions">
+                        <button class="btn-primary" id="publishBtn">🚀 公開する</button>
+                        <button class="btn-secondary" id="previewBtn">👁️ プレビュー</button>
+                        <button class="btn-danger" id="clearBtn">🗑️ クリア</button>
+                    </div>
+                </div>
+                
+                <div class="editor-main">
+                    <div class="editor-field">
+                        <input type="text" id="articleTitle" class="title-input" placeholder="記事タイトルを入力...">
+                    </div>
+                    
+                    <div class="editor-tabs">
+                        <button class="tab-btn active" data-mode="write">✏️ 編集</button>
+                        <button class="tab-btn" data-mode="preview">👁️ プレビュー</button>
+                        <button class="tab-btn" data-mode="split">📖 分割</button>
+                    </div>
+                    
+                    <div class="editor-toolbar">
+                        <button class="toolbar-btn" data-action="h2" title="見出し2">H2</button>
+                        <button class="toolbar-btn" data-action="h3" title="見出し3">H3</button>
+                        <button class="toolbar-btn" data-action="bold" title="太字">B</button>
+                        <button class="toolbar-btn" data-action="italic" title="斜体">I</button>
+                        <button class="toolbar-btn" data-action="code" title="コード">&lt;/&gt;</button>
+                        <button class="toolbar-btn" data-action="link" title="リンク">🔗</button>
+                        <button class="toolbar-btn" data-action="image" title="画像">🖼️</button>
+                        <button class="toolbar-btn" data-action="list" title="リスト">•</button>
+                        <button class="toolbar-btn" data-action="quote" title="引用">❝</button>
+                    </div>
+                    
+                    <div class="editor-content" id="editorContent">
+                        <textarea id="articleContent" placeholder="Markdownで記事を書いてください...
+
+# 見出し1
+## 見出し2
+### 見出し3
+
+**太字** や *斜体* が使えます。
+
+- リスト項目1
+- リスト項目2
+
+> 引用文
+
+`インラインコード`
+
+```
+コードブロック
+```
+
+[リンクテキスト](URL)
+
+![画像の説明](画像URL)"></textarea>
+                        <div id="previewPane" class="preview-pane" style="display: none;"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <input type="hidden" id="editingId" value="">
+        </section>
+
+        <!-- 記事一覧 -->
+        <section class="admin-section" id="articlesSection" style="display: none;">
+            <div class="articles-controls">
+                <div class="search-box">
+                    <input type="text" id="adminSearchInput" placeholder="記事を検索...">
+                    <span class="search-icon">🔍</span>
+                </div>
+                <div class="filter-group">
+                    <select id="filterCategory">
+                        <option value="">すべてのカテゴリ</option>
+                    </select>
+                    <select id="filterStatus">
+                        <option value="">すべてのステータス</option>
+                        <option value="published">公開中</option>
+                        <option value="draft">下書き</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="admin-articles-list" id="adminArticlesList">
+                <!-- 記事一覧が動的に挿入される -->
+            </div>
+        </section>
+
+        <!-- 設定 -->
+        <section class="admin-section" id="settingsSection" style="display: none;">
+            <div class="settings-container">
+                <div class="settings-card">
+                    <h2>🖼️ ヘッダーバナー設定</h2>
+                    <p class="settings-description">ブログトップに表示される横長のヘッダー画像/動画を設定できます。</p>
+                    
+                    <div class="settings-field">
+                        <label>ヘッダー画像</label>
+                        <p class="field-hint">推奨サイズ: 1200×280px以上（横長）</p>
+                        <div class="banner-preview" id="bannerPreview">
+                            <span>クリックして画像を選択</span>
+                        </div>
+                        <input type="file" id="bannerInput" accept="image/*" hidden>
+                        <button class="btn-secondary" id="removeBanner" style="display: none;">ヘッダー画像を削除</button>
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>ヘッダー動画（WebM/MP4）</label>
+                        <p class="field-hint">動画が設定されている場合は画像より優先されます<br>推奨サイズ: 1200×280px以上（横長）、10MB以下</p>
+                        <div class="video-preview" id="videoPreview">
+                            <span>クリックして動画を選択（WebM/MP4）</span>
+                        </div>
+                        <input type="file" id="videoInput" accept="video/webm,video/mp4" hidden>
+                        <button class="btn-secondary" id="removeVideo" style="display: none;">ヘッダー動画を削除</button>
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>
+                            <input type="checkbox" id="showBannerText" checked>
+                            タイトル・サブタイトルを表示する
+                        </label>
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>バナータイトル</label>
+                        <input type="text" id="bannerTitle" placeholder="Blog Bear">
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>バナーサブタイトル</label>
+                        <input type="text" id="bannerSubtitle" placeholder="GitHubで更新できるブログ">
+                    </div>
+                    
+                    <button class="btn-primary" id="saveBannerSettings">ヘッダーバナー設定を保存</button>
+                </div>
+
+                <div class="settings-card">
+                    <h2>🏷️ カテゴリ管理</h2>
+                    <p class="settings-description">記事に使用するカテゴリを追加・削除できます。</p>
+                    
+                    <div class="category-manager">
+                        <div class="category-add">
+                            <input type="text" id="newCategoryName" placeholder="カテゴリ名">
+                            <input type="text" id="newCategoryIcon" placeholder="絵文字" maxlength="2" style="width: 60px; text-align: center;">
+                            <button class="btn-secondary" id="addCategoryBtn">追加</button>
+                        </div>
+                        <div class="category-list-manager" id="categoryListManager">
+                            <!-- カテゴリリストが動的に挿入される -->
+                        </div>
+                    </div>
+                    
+                    <button class="btn-primary" id="saveCategorySettings">カテゴリ設定を保存</button>
+                </div>
+
+                <div class="settings-card">
+                    <h2>🔑 GitHub設定</h2>
+                    <p class="settings-description">GitHubへ記事を自動的に保存するための設定です。</p>
+                    
+                    <div class="settings-field">
+                        <label>リポジトリ名</label>
+                        <input type="text" id="githubRepo" placeholder="username/repository">
+                        <span class="field-hint">例: ambrosestarlit/blog-bear</span>
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>ブランチ名</label>
+                        <input type="text" id="githubBranch" placeholder="main" value="main">
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>Personal Access Token</label>
+                        <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxx">
+                        <span class="field-hint">
+                            <a href="https://github.com/settings/tokens" target="_blank">GitHubで取得</a>
+                            （repoにチェック）
+                        </span>
+                    </div>
+                    
+                    <button class="btn-primary" id="saveGithubSettings">GitHub設定を保存</button>
+                </div>
+                
+                <div class="settings-card">
+                    <h2>👤 プロフィール設定</h2>
+                    
+                    <div class="settings-field">
+                        <label>名前</label>
+                        <input type="text" id="profileName" placeholder="ブログ管理者">
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>自己紹介</label>
+                        <textarea id="profileBio" placeholder="ブログの説明文..."></textarea>
+                    </div>
+                    
+                    <div class="settings-field">
+                        <label>アイコン画像</label>
+                        <div class="profile-icon-preview" id="profileIconPreview">
+                            <img src="../default-icon.png" alt="アイコン">
+                        </div>
+                        <input type="file" id="profileIconInput" accept="image/*" hidden>
+                        <button class="btn-secondary" id="selectProfileIcon">画像を選択</button>
+                    </div>
+                    
+                    <button class="btn-primary" id="saveProfileSettings">プロフィール設定を保存</button>
+                </div>
+                
+                <div class="settings-card">
+                    <h2>🔗 ソーシャルリンク</h2>
+                    
+                    <div id="socialLinks">
+                        <!-- 動的に追加される -->
+                    </div>
+                    
+                    <button class="btn-secondary" id="addSocialLink">+ リンクを追加</button>
+                    <button class="btn-primary" id="saveSocialLinks">ソーシャルリンクを保存</button>
+                </div>
+                
+                <div class="settings-card">
+                    <h2>📦 データ管理</h2>
+                    
+                    <div class="data-actions">
+                        <button class="btn-secondary" id="exportData">📥 データをエクスポート</button>
+                        <button class="btn-secondary" id="importData">📤 データをインポート</button>
+                        <input type="file" id="importInput" accept=".json" hidden>
+                    </div>
+                    
+                    <div class="sync-status" id="syncStatus">
+                        <span class="status-indicator"></span>
+                        <span class="status-text">同期状態を確認中...</span>
+                    </div>
+                    
+                    <button class="btn-primary" id="syncNow">🔄 今すぐ同期</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- プレビューモーダル -->
+    <div class="preview-modal" id="previewModal">
+        <div class="modal-overlay"></div>
+        <div class="modal-content">
+            <button class="modal-close" id="previewClose">×</button>
+            <article class="article-detail" id="previewDetail">
+                <!-- プレビューが動的に挿入される -->
+            </article>
+        </div>
+    </div>
+
+    <!-- メッセージトースト -->
+    <div class="toast" id="toast"></div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
