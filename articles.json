@@ -1,15 +1,3 @@
 {
-  "articles": [
-    {
-      "id": "1764273132863",
-      "title": "テストです",
-      "content": "## こんな感じ\nどうだろう",
-      "category": "日記",
-      "tags": [],
-      "thumbnail": "",
-      "isDraft": false,
-      "createdAt": "2025-11-27T19:52:12.863Z",
-      "updatedAt": "2025-11-27T19:52:12.863Z"
-    }
-  ]
+  "articles": []
 }
