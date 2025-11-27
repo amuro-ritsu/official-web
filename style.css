@@ -224,7 +224,21 @@ body::before {
 .logo-text a:hover {
     opacity: 0.8;
 }
+.logo-text-link {
+    color: inherit;
+    text-decoration: none;
+    display: inline-flex;
+}
 
+.logo-text-link span {
+    display: inline-block;
+    animation: textBounce 2s ease-in-out infinite;
+}
+
+@keyframes textBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
 .site-nav {
     display: flex;
     gap: 8px;
