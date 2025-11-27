@@ -1,3 +1,16 @@
 {
-  "articles": []
+  "articles": [
+    {
+      "id": "1764281746483",
+      "title": "成人向け記事テスト",
+      "content": "![仮です](https://pbs.twimg.com/media/G6yq4jta0AQkWry?format=png&name=small)",
+      "category": "日記",
+      "tags": [],
+      "thumbnail": "",
+      "isDraft": false,
+      "isAdult": true,
+      "createdAt": "2025-11-27T22:15:46.483Z",
+      "updatedAt": "2025-11-27T22:15:46.483Z"
+    }
+  ]
 }
