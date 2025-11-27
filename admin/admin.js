@@ -120,12 +120,19 @@ function initEventListeners() {
     });
     
     // ツールバーボタン
-    document.querySelectorAll('.toolbar-btn').forEach(btn => {
+    document.querySelectorAll('.toolbar-btn[data-action]').forEach(btn => {
         btn.addEventListener('click', () => {
             const action = btn.dataset.action;
             applyMarkdown(action);
         });
     });
+    
+    // 本文への画像アップロード
+    document.getElementById('uploadImageBtn').addEventListener('click', () => {
+        document.getElementById('contentImageInput').click();
+    });
+    
+    document.getElementById('contentImageInput').addEventListener('change', handleContentImageUpload);
     
     // サムネイル選択
     document.getElementById('thumbnailPreview').addEventListener('click', () => {
@@ -344,6 +351,44 @@ function handleThumbnailSelect(e) {
         document.getElementById('removeThumbnail').style.display = 'block';
     };
     reader.readAsDataURL(file);
+}
+
+// ===== 本文への画像アップロード =====
+function handleContentImageUpload(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    // 画像サイズ制限（5MB）
+    if (file.size > 5 * 1024 * 1024) {
+        showToast('画像サイズは5MB以下にしてください', 'error');
+        return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = (event) => {
+        const base64 = event.target.result;
+        const textarea = document.getElementById('articleContent');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        
+        // Markdown画像タグを挿入
+        const imageMarkdown = `![画像](${base64})`;
+        const newText = textarea.value.substring(0, start) + imageMarkdown + textarea.value.substring(end);
+        
+        textarea.value = newText;
+        textarea.focus();
+        
+        // カーソル位置を画像タグの後ろに
+        const newPosition = start + imageMarkdown.length;
+        textarea.setSelectionRange(newPosition, newPosition);
+        
+        updateLivePreview();
+        showToast('画像を挿入しました', 'success');
+    };
+    reader.readAsDataURL(file);
+    
+    // inputをリセット（同じファイルを再選択できるように）
+    e.target.value = '';
 }
 
 // ===== 記事公開 =====
