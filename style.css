@@ -33,15 +33,7 @@
     --transition-normal: 0.3s ease;
     --transition-slow: 0.5s ease;
 }
-.logo-text a {
-    color: inherit;
-    text-decoration: none;
-    transition: opacity 0.2s;
-}
 
-.logo-text a:hover {
-    opacity: 0.8;
-}
 
 /* ===== Reset & Base ===== */
 * {
@@ -212,6 +204,16 @@ body::before {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.05em;
+}
+.logo-text a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s;
+    display: inline;
+}
+
+.logo-text a:hover {
+    opacity: 0.8;
 }
 
 .site-nav {
