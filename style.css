@@ -199,7 +199,16 @@ body::before {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
 }
+.site-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
+.site-logo > a {
+    display: flex;
+    align-items: center;
+}
 .logo-text {
     font-size: 1.5rem;
     font-weight: 700;
