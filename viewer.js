@@ -204,7 +204,7 @@ function renderArticles() {
                     <p class="article-excerpt">${escapeHtml(excerpt)}</p>
                     <div class="article-meta">
                         <span class="article-date">${formatDate(article.createdAt)}</span>
-                        <span class="article-reading-time">約${readingTime}分</span>
+                        <span class="article-time">${formatTime(article.createdAt)}</span>
                     </div>
                 </div>
             </div>
@@ -221,6 +221,12 @@ function renderArticles() {
             openArticle(id);
         });
     });
+}
+function formatTime(dateString) {
+    const date = new Date(dateString);
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
 }
 
 // ===== ページネーション表示 =====
