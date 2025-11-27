@@ -34,7 +34,6 @@
     --transition-slow: 0.5s ease;
 }
 
-
 /* ===== Reset & Base ===== */
 * {
     margin: 0;
@@ -128,6 +127,17 @@ body::before {
     letter-spacing: 0.05em;
 }
 
+.banner-title a {
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s;
+}
+
+.banner-title a:hover {
+    opacity: 0.8;
+    text-decoration: underline;
+}
+
 .banner-subtitle {
     font-size: 1.1rem;
     opacity: 0.9;
@@ -199,31 +209,23 @@ body::before {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
 }
-.site-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
 
-.site-logo > a {
-    display: flex;
-    align-items: center;
-}
 .logo-text {
     font-size: 1.5rem;
     font-weight: 700;
     letter-spacing: 0.05em;
 }
+
 .logo-text a {
     color: inherit;
     text-decoration: none;
     transition: opacity 0.2s;
-    display: inline;
 }
 
 .logo-text a:hover {
     opacity: 0.8;
 }
+
 .logo-text-link {
     color: inherit;
     text-decoration: none;
@@ -239,6 +241,13 @@ body::before {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-5px); }
 }
+
+.site-logo > a {
+    display: block;
+    width: 55px;
+    height: 55px;
+}
+
 .site-nav {
     display: flex;
     gap: 8px;
@@ -403,15 +412,7 @@ body::before {
 }
 
 .page-title::before {
-    content: '';
-    display: inline-block;
-    width: 32px;
-    height: 32px;
-    background-image: url('user-icon.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-    vertical-align: middle;
+    content: '📝';
 }
 
 .search-box {
@@ -542,8 +543,8 @@ body::before {
     content: '📅 ';
 }
 
-.article-time::before {
-    content: '投稿時間 ';
+.article-reading-time::before {
+    content: '⏱️ ';
 }
 
 /* ===== Pagination ===== */
