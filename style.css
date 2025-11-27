@@ -1032,3 +1032,50 @@ body::before {
         font-size: 0.9rem;
     }
 }
+
+/* ===== Adult Content Styles ===== */
+.adult-blur {
+    filter: blur(20px);
+    transition: filter 0.3s ease;
+}
+
+.adult-blur:hover {
+    filter: blur(15px);
+}
+
+/* 成人向け警告ポップアップ */
+.adult-warning-popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10001;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    pointer-events: none;
+}
+
+.adult-warning-popup.show {
+    opacity: 1;
+}
+
+.adult-warning-content {
+    background: rgba(61, 35, 20, 0.95);
+    color: white;
+    padding: 25px 40px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+    border: 2px solid var(--milktea);
+}
+
+.adult-warning-icon {
+    font-size: 2rem;
+}
+
+.adult-warning-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+}

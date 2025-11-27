@@ -43,7 +43,16 @@ async function loadSiteSettings() {
                 banner.classList.add('active');
                 
                 if (settings.headerBanner.title) {
-                    bannerTitle.textContent = settings.headerBanner.title;
+                    const titleLink = document.getElementById('bannerTitleLink');
+                    titleLink.textContent = settings.headerBanner.title;
+                    
+                    // タイトルリンクURL
+                    if (settings.headerBanner.titleUrl) {
+                        titleLink.href = settings.headerBanner.titleUrl;
+                    } else {
+                        titleLink.removeAttribute('href');
+                        titleLink.style.cursor = 'default';
+                    }
                 }
                 if (settings.headerBanner.subtitle) {
                     bannerSubtitle.textContent = settings.headerBanner.subtitle;
@@ -161,7 +170,7 @@ function renderArticles() {
     } else if (searchQuery) {
         pageTitle.innerHTML = `🔍 "${searchQuery}" の検索結果`;
     } else {
-        pageTitle.innerHTML = ' すべての記事';
+        pageTitle.innerHTML = '📝 すべての記事';
     }
     
     // 記事がない場合
@@ -204,7 +213,7 @@ function renderArticles() {
                     <p class="article-excerpt">${escapeHtml(excerpt)}</p>
                     <div class="article-meta">
                         <span class="article-date">${formatDate(article.createdAt)}</span>
-                        <span class="article-time">${formatTime(article.createdAt)}</span>
+                        <span class="article-reading-time">約${readingTime}分</span>
                     </div>
                 </div>
             </div>
@@ -221,12 +230,6 @@ function renderArticles() {
             openArticle(id);
         });
     });
-}
-function formatTime(dateString) {
-    const date = new Date(dateString);
-    const hours = date.getHours().toString().padStart(2, '0');
-    const minutes = date.getMinutes().toString().padStart(2, '0');
-    return `${hours}:${minutes}`;
 }
 
 // ===== ページネーション表示 =====
@@ -415,7 +418,8 @@ function openArticle(id) {
     // サムネイルHTML
     let thumbnailHtml = '';
     if (article.thumbnail) {
-        thumbnailHtml = `<img src="${article.thumbnail}" alt="${escapeHtml(article.title)}" class="article-detail-thumbnail">`;
+        const blurClass = article.isAdult ? 'adult-blur' : '';
+        thumbnailHtml = `<img src="${article.thumbnail}" alt="${escapeHtml(article.title)}" class="article-detail-thumbnail ${blurClass}">`;
     }
     
     detail.innerHTML = `
@@ -428,14 +432,59 @@ function openArticle(id) {
             </div>
         </div>
         ${thumbnailHtml}
-        <div class="article-detail-content">
+        <div class="article-detail-content ${article.isAdult ? 'adult-content' : ''}">
             ${contentHtml}
         </div>
         ${tagsHtml}
     `;
     
+    // 成人向けコンテンツの場合、画像にぼかしを適用
+    if (article.isAdult) {
+        detail.querySelectorAll('.article-detail-content img').forEach(img => {
+            img.classList.add('adult-blur');
+        });
+        
+        // ぼかし画像クリックで解除
+        detail.querySelectorAll('.adult-blur').forEach(img => {
+            img.addEventListener('click', function() {
+                this.classList.remove('adult-blur');
+            });
+            img.style.cursor = 'pointer';
+            img.title = 'クリックで表示';
+        });
+        
+        // 警告ポップアップを表示
+        showAdultWarning();
+    }
+    
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+}
+
+// ===== 成人向け警告ポップアップ =====
+function showAdultWarning() {
+    const warning = document.createElement('div');
+    warning.className = 'adult-warning-popup';
+    warning.innerHTML = `
+        <div class="adult-warning-content">
+            <span class="adult-warning-icon">⚠️</span>
+            <span class="adult-warning-text">この記事には性的表現が含まれております。</span>
+        </div>
+    `;
+    document.body.appendChild(warning);
+    
+    // フェードイン
+    setTimeout(() => {
+        warning.classList.add('show');
+    }, 10);
+    
+    // 1秒後にフェードアウト
+    setTimeout(() => {
+        warning.classList.remove('show');
+        setTimeout(() => {
+            warning.remove();
+        }, 500);
+    }, 1500);
 }
 
 // ===== モーダルを閉じる =====
@@ -577,12 +626,3 @@ function calculateReadingTime(content) {
     const minutes = Math.ceil(charCount / wordsPerMinute);
     return Math.max(1, minutes);
 }
-document.addEventListener('DOMContentLoaded', () => {
-    const logoLink = document.querySelector('.logo-text-link');
-    if (logoLink) {
-        const text = logoLink.textContent;
-        logoLink.innerHTML = text.split('').map((char, i) => 
-            `<span style="animation-delay: ${i * 0.1}s">${char}</span>`
-        ).join('');
-    }
-});
