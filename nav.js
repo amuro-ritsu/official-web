@@ -17,11 +17,10 @@ function initNavigation() {
             </div>
             <nav class="site-nav">
                 <a href="./" class="nav-link ${currentPage === '' || currentPage === 'index.html' ? 'active' : ''}">ホーム</a>
-                <a href="#" class="nav-link" id="aboutBtn">About</a>
                 <a href="#" class="nav-link" id="categoriesBtn">カテゴリ</a>
+                <a href="radio.html" class="nav-link ${currentPage === 'radio.html' ? 'active' : ''}">ラジオ</a>
                 <a href="work.html" class="nav-link ${currentPage === 'work.html' ? 'active' : ''}">お仕事</a>
-                
-                <a href="https://www.dlsite.com/girls/circle/profile/=/maker_id/RG01057835.html" class="nav-link" target="_blank">DLsite</a>
+                <a href="#" class="nav-link" id="aboutBtn">About</a>
                 <a href="https://ci-en.dlsite.com/creator/33200" class="nav-link" target="_blank">Ci-en</a>
             </nav>
         </div>
