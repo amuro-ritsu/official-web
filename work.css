@@ -357,3 +357,16 @@
         grid-template-columns: 1fr;
     }
 }
+
+/* ===== Google Form Container ===== */
+.google-form-container {
+    background: linear-gradient(145deg, #fff 0%, var(--cream) 100%);
+    border-radius: var(--border-radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+
+.google-form-container iframe {
+    border-radius: var(--border-radius-md);
+    max-width: 100%;
+}
