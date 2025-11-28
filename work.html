@@ -194,36 +194,9 @@
                     <span class="section-icon">✉️</span>
                     お問い合わせ
                 </h2>
-                <form class="contact-form" id="contactForm">
-                    <div class="form-group">
-                        <label for="contactName">お名前 <span class="required">*</span></label>
-                        <input type="text" id="contactName" name="name" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactEmail">メールアドレス <span class="required">*</span></label>
-                        <input type="email" id="contactEmail" name="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactCategory">ご依頼内容 <span class="required">*</span></label>
-                        <select id="contactCategory" name="category" required>
-                            <option value="">選択してください</option>
-                            <option value="animation-loop">ループアニメーション</option>
-                            <option value="animation-short">ショートアニメーション</option>
-                            <option value="illust-tachie">イラスト（立ち絵）</option>
-                            <option value="illust-nobg">イラスト（一枚絵・背景なし）</option>
-                            <option value="illust-bg">イラスト（一枚絵・背景あり）</option>
-                            <option value="voice">声のお仕事</option>
-                            <option value="other">その他・相談</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="contactMessage">ご依頼内容の詳細 <span class="required">*</span></label>
-                        <textarea id="contactMessage" name="message" rows="6" placeholder="ご希望の内容、納期、予算など詳しくお聞かせください" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">
-                        <span>📨</span> 送信する
-                    </button>
-                </form>
+                <div class="google-form-container">
+                    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSeCQbfh0OVkuiyeYUssY3Zq_U5X45PomMU6qGb9S-t6huGV-g/viewform?embedded=true" width="100%" height="996" frameborder="0" marginheight="0" marginwidth="0">読み込んでいます…</iframe>
+                </div>
             </section>
         </div>
     </main>
@@ -233,33 +206,7 @@
         <p>© 2025 安室りつ Official - Powered by GitHub Pages</p>
     </footer>
 
-    <script src="age-verify.js"></script>
     <script src="age-check.js"></script>
     <script src="nav.js"></script>
-    <script>
-        // フォーム送信処理
-        document.getElementById('contactForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('contactName').value;
-            const email = document.getElementById('contactEmail').value;
-            const category = document.getElementById('contactCategory').value;
-            const message = document.getElementById('contactMessage').value;
-            
-            // メール本文を作成
-            const subject = encodeURIComponent(`【お仕事依頼】${category}`);
-            const body = encodeURIComponent(
-                `お名前: ${name}\n` +
-                `メールアドレス: ${email}\n` +
-                `ご依頼内容: ${category}\n\n` +
-                `詳細:\n${message}`
-            );
-            
-            // メーラーを開く（ここにあなたのメールアドレスを入れてください）
-            window.location.href = `mailto:YOUR_EMAIL@example.com?subject=${subject}&body=${body}`;
-            
-            alert('メーラーが開きます。送信をお願いします。');
-        });
-    </script>
 </body>
 </html>
