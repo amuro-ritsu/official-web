@@ -19,7 +19,6 @@ function initNavigation() {
                 <a href="./" class="nav-link ${currentPage === '' || currentPage === 'index.html' ? 'active' : ''}">ホーム</a>
                 <a href="#" class="nav-link" id="categoriesBtn">カテゴリ</a>
                 <a href="radio.html" class="nav-link ${currentPage === 'radio.html' ? 'active' : ''}">ラジオ</a>
-                <a href="work.html" class="nav-link ${currentPage === 'work.html' ? 'active' : ''}">お仕事</a>
                 <a href="#" class="nav-link" id="aboutBtn">About</a>
                 <a href="https://ci-en.dlsite.com/creator/33200" class="nav-link" target="_blank">Ci-en</a>
             </nav>
@@ -33,6 +32,35 @@ function initNavigation() {
         logoLink.innerHTML = text.split('').map((char, i) => 
             `<span style="animation-delay: ${i * 0.1}s">${char}</span>`
         ).join('');
+    }
+    
+    // Aboutボタンのイベントリスナー（PC用）
+    const aboutBtn = document.getElementById('aboutBtn');
+    if (aboutBtn) {
+        aboutBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            if (typeof renderAbout === 'function') {
+                renderAbout();
+            }
+            const aboutModal = document.getElementById('aboutModal');
+            if (aboutModal) {
+                aboutModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
+    }
+    
+    // カテゴリボタンのイベントリスナー（PC用）
+    const categoriesBtn = document.getElementById('categoriesBtn');
+    if (categoriesBtn) {
+        categoriesBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const categoriesModal = document.getElementById('categoriesModal');
+            if (categoriesModal) {
+                categoriesModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            }
+        });
     }
 }
 
