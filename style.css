@@ -1103,167 +1103,21 @@ body.no-banner .main-content {
         height: 180px;
     }
     
-    /* スマホ用モーダル - 全画面表示 */
-    .modal {
-        padding: 0 !important;
-        align-items: flex-start !important;
-    }
-    
-    .modal-content {
-        max-width: 100% !important;
-        width: 100% !important;
-        max-height: 100vh !important;
-        min-height: 100vh !important;
-        height: 100vh !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-        overflow-y: auto !important;
-    }
-    
-    .modal-close {
-        top: 10px !important;
-        right: 10px !important;
-        width: 40px !important;
-        height: 40px !important;
-        font-size: 1.4rem !important;
-        position: fixed !important;
-        background: rgba(61, 35, 20, 0.95) !important;
-        z-index: 1000 !important;
-    }
-    
     .article-detail {
-        padding: 20px 16px !important;
-        padding-top: 60px !important;
-    }
-    
-    .article-detail-header {
-        margin-bottom: 20px;
-        padding-bottom: 15px;
-    }
-    
-    .article-detail-category {
-        font-size: 0.85rem;
-        padding: 4px 10px;
+        padding: 25px;
     }
     
     .article-detail-title {
-        font-size: 1.3rem !important;
-        line-height: 1.5 !important;
-        margin-top: 10px;
+        font-size: 1.4rem;
     }
     
-    .article-detail-meta {
-        font-size: 0.85rem;
-        gap: 10px;
-    }
-    
-    .article-detail-thumbnail {
-        margin: 0 -16px 20px -16px !important;
-        border-radius: 0 !important;
-        max-height: 250px;
-    }
-    
-    .article-detail-content {
-        font-size: 1rem;
-        line-height: 1.8;
-    }
-    
-    .article-detail-content h2 {
-        font-size: 1.2rem;
-        margin: 25px 0 15px;
-    }
-    
-    .article-detail-content h3 {
-        font-size: 1.1rem;
-    }
-    
-    .article-detail-content p {
-        margin-bottom: 1.2em;
-    }
-    
-    .article-detail-content img {
-        margin: 15px -16px;
-        width: calc(100% + 32px);
-        max-width: calc(100% + 32px);
-        border-radius: 0;
-    }
-    
-    .article-detail-content pre {
-        margin: 15px -16px;
-        border-radius: 0;
-        padding: 15px;
-        font-size: 0.85rem;
-    }
-    
-    .article-detail-content blockquote {
-        margin: 15px 0;
-        padding: 12px 15px;
-        font-size: 0.95rem;
-    }
-    
-    .article-detail-tags {
-        margin-top: 25px;
-        padding-top: 20px;
-    }
-    
-    .article-tag {
-        font-size: 0.8rem;
-        padding: 5px 10px;
+    .modal-content {
+        max-height: 95vh;
     }
     
     .pagination button {
         padding: 8px 14px;
         font-size: 0.9rem;
-    }
-    
-    /* カテゴリモーダル - スマホ全画面 */
-    #categoriesModal .modal-content,
-    #aboutModal .modal-content {
-        max-width: 100% !important;
-        width: 100% !important;
-        max-height: 100vh !important;
-        min-height: 100vh !important;
-        height: 100vh !important;
-        border-radius: 0 !important;
-        margin: 0 !important;
-    }
-    
-    .categories-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 12px !important;
-        padding: 10px !important;
-    }
-    
-    .category-card {
-        padding: 15px 10px !important;
-    }
-    
-    .about-detail {
-        padding: 20px 16px !important;
-        padding-top: 60px !important;
-    }
-    
-    .about-icon {
-        width: 100px !important;
-        height: 100px !important;
-    }
-    
-    .about-name {
-        font-size: 1.3rem !important;
-    }
-    
-    .about-bio {
-        font-size: 0.95rem !important;
-    }
-    
-    .about-links {
-        flex-direction: column !important;
-        gap: 10px !important;
-    }
-    
-    .about-link {
-        width: 100% !important;
-        justify-content: center !important;
     }
 }
 
@@ -1312,6 +1166,30 @@ body.no-banner .main-content {
 .adult-warning-text {
     font-size: 1.1rem;
     font-weight: 500;
+}
+
+/* 警告ポップアップ - スマホ対応 */
+@media (max-width: 600px) {
+    .adult-warning-popup {
+        width: 90%;
+        max-width: 320px;
+    }
+    
+    .adult-warning-content {
+        flex-direction: column;
+        text-align: center;
+        padding: 20px 25px;
+        gap: 10px;
+    }
+    
+    .adult-warning-icon {
+        font-size: 2.5rem;
+    }
+    
+    .adult-warning-text {
+        font-size: 0.95rem;
+        line-height: 1.6;
+    }
 }
 /* ===== Blog Bear - リアクション＆LINE追加スタイル =====
    このファイルの内容を既存のstyle.cssの末尾に追加してください
