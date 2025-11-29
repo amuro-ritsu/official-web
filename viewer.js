@@ -4,6 +4,23 @@ let articles = [];
 let currentPage = 1;
 let currentCategory = null;
 let searchQuery = '';
+let reactionsData = {}; // リアクションデータのキャッシュ
+
+// ===== LINE友だち追加URL（ここを変更してください） =====
+const LINE_ADD_FRIEND_URL = 'https://lin.ee/I4nooXy';
+
+// ===== リアクションの種類（Post-Bearと同じスタンプを使用） =====
+const REACTIONS = [
+    { emoji: 'iine', name: 'いいね', image: 'stamps/iine.png' },
+    { emoji: 'suki', name: 'すき', image: 'stamps/suki.png' },
+    { emoji: 'omedetou', name: 'おめでと', image: 'stamps/omedetou.png' },
+    { emoji: 'gannbare', name: 'がんば', image: 'stamps/gannbare.png' },
+    { emoji: 'otukare', name: 'おつかれ', image: 'stamps/otukare.png' },
+    { emoji: 'kitai', name: '期待', image: 'stamps/kitai.png' },
+    { emoji: 'wakaru', name: 'わかる', image: 'stamps/wakaru.png' },
+    { emoji: 'www', name: 'www', image: 'stamps/www.png' },
+    { emoji: 'ok', name: 'OK!', image: 'stamps/ok.png' }
+];
 
 // ===== 初期化 =====
 document.addEventListener('DOMContentLoaded', async () => {
@@ -422,6 +439,40 @@ function openArticle(id) {
         thumbnailHtml = `<img src="${article.thumbnail}" alt="${escapeHtml(article.title)}" class="article-detail-thumbnail ${blurClass}">`;
     }
     
+    // LINE友だち追加ボタン
+    const lineButtonHtml = `
+        <a href="${LINE_ADD_FRIEND_URL}" class="line-add-btn" target="_blank" rel="noopener">
+            <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="更新通知を受け取る" height="28" border="0">
+        </a>
+    `;
+    
+    // リアクション状態表示エリア
+    const reactionStatusHtml = `
+        <div class="reaction-status" id="reaction-status-${id}">
+            <!-- 動的に生成される -->
+        </div>
+    `;
+    
+    // リアクションパネル
+    const reactionsHtml = `
+        <div class="article-reactions" id="reactions-${id}">
+            <div class="reactions-header">
+                <span class="reactions-title">この記事にリアクション</span>
+            </div>
+            <div class="reactions-grid">
+                ${REACTIONS.map(reaction => `
+                    <button class="reaction-btn" 
+                            data-article-id="${id}" 
+                            data-reaction="${reaction.emoji}"
+                            title="${reaction.name}">
+                        <img src="${reaction.image}" class="reaction-emoji-img" alt="${reaction.name}">
+                        <span class="reaction-count" id="count-${id}-${reaction.emoji}">0</span>
+                    </button>
+                `).join('')}
+            </div>
+        </div>
+    `;
+    
     detail.innerHTML = `
         <div class="article-detail-header">
             <span class="article-detail-category">${categoryIcon} ${article.category}</span>
@@ -429,13 +480,16 @@ function openArticle(id) {
             <div class="article-detail-meta">
                 <span class="article-date">${formatDate(article.createdAt)}</span>
                 <span class="article-time">${formatTime(article.createdAt)}</span>
+                ${lineButtonHtml}
             </div>
+            ${reactionStatusHtml}
         </div>
         ${thumbnailHtml}
         <div class="article-detail-content ${article.isAdult ? 'adult-content' : ''}">
             ${contentHtml}
         </div>
         ${tagsHtml}
+        ${reactionsHtml}
     `;
     
     // 成人向けコンテンツの場合、画像にぼかしを適用
@@ -457,8 +511,266 @@ function openArticle(id) {
         showAdultWarning();
     }
     
+    // リアクションボタンのイベントリスナーを設定
+    detail.querySelectorAll('.reaction-btn').forEach(btn => {
+        btn.addEventListener('click', handleReactionClick);
+    });
+    
+    // リアクション数を読み込み
+    loadReactions(id);
+    
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
+}
+
+// ===== リアクション機能 =====
+
+// リアクション読み込み
+async function loadReactions(articleId) {
+    try {
+        // Firebaseが利用可能かチェック
+        if (typeof db !== 'undefined') {
+            const docRef = db.collection('blog-reactions').doc(articleId);
+            const doc = await docRef.get();
+            
+            if (doc.exists) {
+                const data = doc.data();
+                reactionsData[articleId] = data;
+                
+                // 各リアクションの数を表示
+                REACTIONS.forEach(reaction => {
+                    const count = data[reaction.emoji] || 0;
+                    const countEl = document.getElementById(`count-${articleId}-${reaction.emoji}`);
+                    if (countEl) {
+                        countEl.textContent = count;
+                        
+                        // 自分が押したリアクションをハイライト
+                        if (hasUserReacted(articleId, reaction.emoji)) {
+                            countEl.closest('.reaction-btn').classList.add('reacted');
+                        }
+                    }
+                });
+            } else {
+                // データがない場合は初期化
+                reactionsData[articleId] = {};
+                REACTIONS.forEach(reaction => {
+                    reactionsData[articleId][reaction.emoji] = 0;
+                });
+            }
+        } else {
+            // Firebaseがない場合はローカルストレージのみ使用
+            const localData = JSON.parse(localStorage.getItem('blogReactions') || '{}');
+            reactionsData[articleId] = localData[articleId] || {};
+            
+            REACTIONS.forEach(reaction => {
+                const count = reactionsData[articleId][reaction.emoji] || 0;
+                const countEl = document.getElementById(`count-${articleId}-${reaction.emoji}`);
+                if (countEl) {
+                    countEl.textContent = count;
+                    
+                    if (hasUserReacted(articleId, reaction.emoji)) {
+                        countEl.closest('.reaction-btn').classList.add('reacted');
+                    }
+                }
+            });
+        }
+        
+        // リアクション状態を更新
+        updateReactionStatus(articleId);
+    } catch (error) {
+        console.error('リアクション読み込みエラー:', error);
+        // エラー時はローカルデータで表示
+        REACTIONS.forEach(reaction => {
+            const countEl = document.getElementById(`count-${articleId}-${reaction.emoji}`);
+            if (countEl) {
+                countEl.textContent = '0';
+            }
+        });
+        updateReactionStatus(articleId);
+    }
+}
+
+// リアクションクリック処理
+async function handleReactionClick(e) {
+    const btn = e.currentTarget;
+    const articleId = btn.dataset.articleId;
+    const reaction = btn.dataset.reaction;
+    
+    // スパム防止：連打防止
+    if (btn.disabled) return;
+    btn.disabled = true;
+    
+    try {
+        const hasReacted = hasUserReacted(articleId, reaction);
+        
+        if (hasReacted) {
+            // リアクション取り消し
+            await removeReaction(articleId, reaction);
+            btn.classList.remove('reacted');
+        } else {
+            // リアクション追加
+            await addReaction(articleId, reaction);
+            btn.classList.add('reacted');
+            
+            // アニメーション効果
+            showReactionAnimation(btn, reaction);
+        }
+        
+        // リアクション数を再読み込み
+        await loadReactions(articleId);
+    } catch (error) {
+        console.error('リアクションエラー:', error);
+        showReactionError();
+    } finally {
+        setTimeout(() => {
+            btn.disabled = false;
+        }, 500);
+    }
+}
+
+// リアクション追加
+async function addReaction(articleId, reaction) {
+    if (typeof db !== 'undefined') {
+        const docRef = db.collection('blog-reactions').doc(articleId);
+        
+        await db.runTransaction(async (transaction) => {
+            const doc = await transaction.get(docRef);
+            
+            let data = {};
+            if (doc.exists) {
+                data = doc.data();
+            }
+            
+            // カウントを増やす
+            data[reaction] = (data[reaction] || 0) + 1;
+            
+            transaction.set(docRef, data);
+        });
+    } else {
+        // Firebaseがない場合はローカルストレージに保存
+        const localData = JSON.parse(localStorage.getItem('blogReactions') || '{}');
+        if (!localData[articleId]) localData[articleId] = {};
+        localData[articleId][reaction] = (localData[articleId][reaction] || 0) + 1;
+        localStorage.setItem('blogReactions', JSON.stringify(localData));
+        reactionsData[articleId] = localData[articleId];
+    }
+    
+    // ユーザーのリアクションを記録
+    saveUserReaction(articleId, reaction, true);
+    
+    // リアクション状態を更新
+    updateReactionStatus(articleId);
+}
+
+// リアクション削除
+async function removeReaction(articleId, reaction) {
+    if (typeof db !== 'undefined') {
+        const docRef = db.collection('blog-reactions').doc(articleId);
+        
+        await db.runTransaction(async (transaction) => {
+            const doc = await transaction.get(docRef);
+            
+            if (doc.exists) {
+                const data = doc.data();
+                data[reaction] = Math.max(0, (data[reaction] || 0) - 1);
+                transaction.set(docRef, data);
+            }
+        });
+    } else {
+        // Firebaseがない場合はローカルストレージから削除
+        const localData = JSON.parse(localStorage.getItem('blogReactions') || '{}');
+        if (localData[articleId] && localData[articleId][reaction]) {
+            localData[articleId][reaction] = Math.max(0, localData[articleId][reaction] - 1);
+            localStorage.setItem('blogReactions', JSON.stringify(localData));
+            reactionsData[articleId] = localData[articleId];
+        }
+    }
+    
+    // ユーザーのリアクションを削除
+    saveUserReaction(articleId, reaction, false);
+    
+    // リアクション状態を更新
+    updateReactionStatus(articleId);
+}
+
+// ユーザーがリアクション済みか確認
+function hasUserReacted(articleId, reaction) {
+    const userReactions = JSON.parse(localStorage.getItem('userBlogReactions') || '{}');
+    return userReactions[articleId] && userReactions[articleId][reaction];
+}
+
+// ユーザーのリアクションを記録
+function saveUserReaction(articleId, reaction, reacted) {
+    const userReactions = JSON.parse(localStorage.getItem('userBlogReactions') || '{}');
+    
+    if (!userReactions[articleId]) {
+        userReactions[articleId] = {};
+    }
+    
+    userReactions[articleId][reaction] = reacted;
+    localStorage.setItem('userBlogReactions', JSON.stringify(userReactions));
+}
+
+// リアクション状態表示更新
+function updateReactionStatus(articleId) {
+    const statusElement = document.getElementById(`reaction-status-${articleId}`);
+    if (!statusElement) return;
+    
+    let statusHTML = '';
+    
+    // 各リアクションの数をチェック
+    REACTIONS.forEach(reaction => {
+        const countElement = document.getElementById(`count-${articleId}-${reaction.emoji}`);
+        const count = countElement ? parseInt(countElement.textContent) : 0;
+        
+        if (count > 0) {
+            statusHTML += `
+                <div class="reaction-status-item">
+                    <img src="${reaction.image}" class="reaction-status-icon" alt="${reaction.name}">
+                    <span class="reaction-status-count">${count}</span>
+                </div>
+            `;
+        }
+    });
+    
+    statusElement.innerHTML = statusHTML;
+}
+
+// リアクションアニメーション
+function showReactionAnimation(btn, reactionEmoji) {
+    const reactionData = REACTIONS.find(r => r.emoji === reactionEmoji);
+    if (!reactionData) return;
+    
+    const floater = document.createElement('div');
+    floater.className = 'reaction-floater';
+    floater.innerHTML = `<img src="${reactionData.image}" alt="${reactionData.name}">`;
+    
+    const rect = btn.getBoundingClientRect();
+    floater.style.left = `${rect.left + rect.width / 2}px`;
+    floater.style.top = `${rect.top}px`;
+    
+    document.body.appendChild(floater);
+    
+    setTimeout(() => {
+        floater.remove();
+    }, 1000);
+}
+
+// エラー表示
+function showReactionError() {
+    const toast = document.createElement('div');
+    toast.className = 'reaction-toast';
+    toast.textContent = 'リアクションの送信に失敗しました';
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.classList.add('show');
+    }, 10);
+    
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
 }
 
 // ===== 成人向け警告ポップアップ =====
