@@ -154,6 +154,7 @@ body::before {
         min-height: 0;
         aspect-ratio: unset;
         overflow: visible;
+        margin-top: 0;
     }
     
     .header-banner img,
@@ -163,6 +164,7 @@ body::before {
         height: auto;
         object-fit: fill;
         display: block;
+        margin-top: 0;
     }
     
     .header-banner img.active,
@@ -175,27 +177,28 @@ body::before {
     }
     
     .header-banner-content {
-        position: relative;
-        bottom: auto;
+        position: absolute;
+        bottom: 15px;
+        right: 15px;
         left: auto;
-        right: auto;
+        top: auto;
         transform: none;
-        width: 100%;
-        max-width: none;
-        padding: 20px;
-        box-sizing: border-box;
-        background: linear-gradient(to bottom, rgba(61, 35, 20, 0.8), rgba(61, 35, 20, 0.95));
-        margin-top: -5px;
+        width: auto;
+        max-width: 70%;
+        padding: 0;
+        background: none;
+        text-align: right;
     }
     
     .banner-title {
-        font-size: 1.6rem;
-        margin-bottom: 10px;
+        font-size: 1.4rem;
+        margin-bottom: 0;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.7), 0 0 20px rgba(0, 0, 0, 0.5);
     }
     
+    /* スマホではサブタイトル非表示（Aboutに移動） */
     .banner-subtitle {
-        font-size: 0.95rem;
-        line-height: 1.7;
+        display: none;
     }
 }
 
@@ -1556,5 +1559,62 @@ body::before {
     
     .reaction-count {
         font-size: 0.8rem;
+    }
+}
+
+/* ===== Aboutブログ説明セクション ===== */
+.about-blog-section {
+    margin-top: 30px;
+    padding-top: 25px;
+    border-top: 2px dashed var(--biscuit-light);
+}
+
+.about-blog-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 15px;
+}
+
+.about-blog-icon {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.about-blog-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--chocolate-dark);
+}
+
+.about-blog-description {
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--text-main);
+    background: var(--milktea-light);
+    padding: 15px 18px;
+    border-radius: var(--border-radius-md);
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    .about-blog-section {
+        margin-top: 25px;
+        padding-top: 20px;
+    }
+    
+    .about-blog-icon {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .about-blog-title {
+        font-size: 1rem;
+    }
+    
+    .about-blog-description {
+        font-size: 0.9rem;
+        padding: 12px 15px;
     }
 }

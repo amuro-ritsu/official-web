@@ -73,6 +73,8 @@ async function loadSiteSettings() {
                 }
                 if (settings.headerBanner.subtitle) {
                     bannerSubtitle.textContent = settings.headerBanner.subtitle;
+                    // About用にブログ説明文を保存
+                    window.blogDescription = settings.headerBanner.subtitle;
                 }
                 if (!settings.headerBanner.showText) {
                     document.querySelector('.header-banner-content').style.display = 'none';
@@ -883,11 +885,22 @@ function renderAbout() {
         `;
     }
     
+    // ブログ説明文を取得（site-settingsから、またはデフォルト）
+    const blogDescription = window.blogDescription || 'Vクリエイター「安室りつ」のOfficialブログです🧸\n成人向けを取り扱うため、未成年の閲覧はご遠慮ください。';
+    
     aboutDetail.innerHTML = `
         <img src="${profile.icon || 'default-icon.png'}" alt="${profile.name}" class="about-icon">
         <h2 class="about-name">${profile.name}</h2>
         <p class="about-bio">${profile.bio}</p>
         ${linksHtml}
+        
+        <div class="about-blog-section">
+            <div class="about-blog-header">
+                <img src="subtittle-icon.png" alt="" class="about-blog-icon">
+                <span class="about-blog-title">このブログについて</span>
+            </div>
+            <p class="about-blog-description">${blogDescription.replace(/\n/g, '<br>')}</p>
+        </div>
     `;
 }
 
