@@ -118,6 +118,8 @@ body::before {
     color: white;
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     z-index: 2;
+    width: 90%;
+    max-width: 700px;
 }
 
 .banner-title {
@@ -145,17 +147,38 @@ body::before {
     line-height: 1.6;
 }
 
+/* スマホ対応 - ヘッダーバナー */
 @media (max-width: 600px) {
     .header-banner {
-        height: 200px;
+        height: auto;
+        min-height: 320px;
+        aspect-ratio: 16 / 11;
+    }
+    
+    .header-banner img,
+    .header-banner video {
+        object-position: center top;
+    }
+    
+    .header-banner-content {
+        bottom: 25px;
+        left: 0;
+        right: 0;
+        transform: none;
+        width: 100%;
+        max-width: none;
+        padding: 0 20px;
+        box-sizing: border-box;
     }
     
     .banner-title {
         font-size: 1.8rem;
+        margin-bottom: 10px;
     }
     
     .banner-subtitle {
-        font-size: 0.95rem;
+        font-size: 1rem;
+        line-height: 1.7;
     }
 }
 
