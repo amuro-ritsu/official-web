@@ -70,12 +70,16 @@ body::before {
 
 /* ===== Header Banner ===== */
 .header-banner {
-    position: relative;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     width: 100%;
     height: 280px;
     background: linear-gradient(135deg, var(--chocolate-dark) 0%, var(--chocolate-medium) 50%, var(--milktea) 100%);
     overflow: hidden;
     display: none;
+    z-index: 90;
 }
 
 .header-banner.active {
@@ -150,26 +154,36 @@ body::before {
 /* スマホ対応 - ヘッダーバナー */
 @media (max-width: 600px) {
     .header-banner {
-        height: auto;
-        min-height: 0;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: auto !important;
+        min-height: 0 !important;
         aspect-ratio: unset;
         overflow: visible;
-        margin-top: 0;
+        margin: 0 !important;
+        padding: 0 !important;
+        line-height: 0;
+        z-index: 90;
     }
     
     .header-banner img,
     .header-banner video {
         position: relative;
-        width: 100vw;
-        height: auto;
-        object-fit: fill;
-        display: block;
-        margin-top: 0;
+        width: 100%;
+        height: auto !important;
+        object-fit: contain;
+        display: none;
+        margin: 0 !important;
+        padding: 0 !important;
+        vertical-align: top;
+        line-height: 0;
     }
     
     .header-banner img.active,
     .header-banner video.active {
-        display: block;
+        display: block !important;
     }
     
     .header-banner-overlay {
@@ -188,6 +202,7 @@ body::before {
         padding: 0;
         background: none;
         text-align: right;
+        line-height: normal;
     }
     
     .banner-title {
@@ -200,16 +215,32 @@ body::before {
     .banner-subtitle {
         display: none;
     }
+    
+    /* スマホ用ヘッダー位置（JSで動的に設定） */
+    .site-header {
+        top: var(--banner-height, 200px);
+    }
+    
+    .site-header.no-banner {
+        top: 0;
+    }
 }
 
 /* ===== Header ===== */
 .site-header {
     background: linear-gradient(135deg, var(--chocolate-dark) 0%, var(--chocolate-medium) 100%);
     padding: 0 20px;
-    position: sticky;
-    top: 0;
+    position: fixed;
+    top: 280px;
+    left: 0;
+    right: 0;
     z-index: 100;
     box-shadow: var(--shadow-md);
+}
+
+/* バナーがない場合はヘッダーを上に */
+.site-header.no-banner {
+    top: 0;
 }
 
 .header-inner {
@@ -317,9 +348,15 @@ body::before {
     max-width: 1200px;
     margin: 0 auto;
     padding: 30px 20px;
+    padding-top: 380px; /* バナー280px + ヘッダー70px + 余白30px */
     display: grid;
     grid-template-columns: 280px 1fr;
     gap: 30px;
+}
+
+/* バナーがない場合 */
+body.no-banner .main-content {
+    padding-top: 100px; /* ヘッダー70px + 余白30px */
 }
 
 /* ===== Sidebar ===== */

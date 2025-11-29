@@ -104,10 +104,71 @@ async function loadSiteSettings() {
                     blogConfig.categoryIcons[cat.name] = cat.icon;
                 });
             }
+            
+            // 固定ヘッダーの位置を調整
+            adjustFixedHeader();
         }
     } catch (error) {
         console.log('サイト設定の読み込みをスキップ:', error);
+        // バナーがない場合の処理
+        document.body.classList.add('no-banner');
+        const siteHeader = document.querySelector('.site-header');
+        if (siteHeader) {
+            siteHeader.classList.add('no-banner');
+        }
     }
+}
+
+// ===== 固定ヘッダーの位置調整 =====
+function adjustFixedHeader() {
+    const banner = document.getElementById('headerBanner');
+    const siteHeader = document.querySelector('.site-header');
+    const mainContent = document.querySelector('.main-content');
+    
+    if (!banner || !banner.classList.contains('active')) {
+        // バナーがない場合
+        document.body.classList.add('no-banner');
+        if (siteHeader) {
+            siteHeader.style.top = '0';
+        }
+        if (mainContent) {
+            mainContent.style.paddingTop = '100px';
+        }
+        return;
+    }
+    
+    // バナーの高さを取得して調整
+    const updateHeaderPosition = () => {
+        const bannerHeight = banner.offsetHeight;
+        const headerHeight = siteHeader ? siteHeader.offsetHeight : 70;
+        
+        if (siteHeader) {
+            siteHeader.style.top = bannerHeight + 'px';
+        }
+        if (mainContent) {
+            mainContent.style.paddingTop = (bannerHeight + headerHeight + 30) + 'px';
+        }
+        
+        // CSS変数も設定（スマホ用）
+        document.documentElement.style.setProperty('--banner-height', bannerHeight + 'px');
+    };
+    
+    // 初回実行
+    setTimeout(updateHeaderPosition, 100);
+    
+    // 動画/画像の読み込み完了時に再計算
+    const video = banner.querySelector('video');
+    const img = banner.querySelector('img');
+    
+    if (video) {
+        video.addEventListener('loadedmetadata', updateHeaderPosition);
+    }
+    if (img) {
+        img.addEventListener('load', updateHeaderPosition);
+    }
+    
+    // リサイズ時に再計算
+    window.addEventListener('resize', updateHeaderPosition);
 }
 
 // ===== プロフィール初期化 =====
