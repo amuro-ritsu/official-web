@@ -2,7 +2,7 @@
   "name": "Blog Bear Official",
   "short_name": "Blog Bear",
   "description": "アンブローズ様の公式ブログ",
-  "start_url": "/index.html",
+  "start_url": "https://amuro-ritsu.github.io/official-web/",
   "display": "standalone",
   "background_color": "#faf3eb",
   "theme_color": "#6cc4b0",
