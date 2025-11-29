@@ -1046,16 +1046,108 @@ body::before {
         height: 180px;
     }
     
-    .article-detail {
-        padding: 25px;
-    }
-    
-    .article-detail-title {
-        font-size: 1.4rem;
+    /* スマホ用モーダル - 大幅改善 */
+    .modal {
+        padding: 0;
     }
     
     .modal-content {
-        max-height: 95vh;
+        max-width: 100%;
+        width: 100%;
+        max-height: 100vh;
+        min-height: 100vh;
+        border-radius: 0;
+        margin: 0;
+    }
+    
+    .modal-close {
+        top: 10px;
+        right: 10px;
+        width: 36px;
+        height: 36px;
+        font-size: 1.3rem;
+        position: fixed;
+        background: rgba(61, 35, 20, 0.9);
+    }
+    
+    .article-detail {
+        padding: 20px 16px;
+        padding-top: 50px;
+    }
+    
+    .article-detail-header {
+        margin-bottom: 20px;
+        padding-bottom: 15px;
+    }
+    
+    .article-detail-category {
+        font-size: 0.85rem;
+        padding: 4px 10px;
+    }
+    
+    .article-detail-title {
+        font-size: 1.3rem;
+        line-height: 1.5;
+        margin-top: 10px;
+    }
+    
+    .article-detail-meta {
+        font-size: 0.85rem;
+        gap: 10px;
+    }
+    
+    .article-detail-thumbnail {
+        margin: 0 -16px 20px -16px;
+        border-radius: 0;
+        max-height: 250px;
+    }
+    
+    .article-detail-content {
+        font-size: 1rem;
+        line-height: 1.8;
+    }
+    
+    .article-detail-content h2 {
+        font-size: 1.2rem;
+        margin: 25px 0 15px;
+    }
+    
+    .article-detail-content h3 {
+        font-size: 1.1rem;
+    }
+    
+    .article-detail-content p {
+        margin-bottom: 1.2em;
+    }
+    
+    .article-detail-content img {
+        margin: 15px -16px;
+        width: calc(100% + 32px);
+        max-width: calc(100% + 32px);
+        border-radius: 0;
+    }
+    
+    .article-detail-content pre {
+        margin: 15px -16px;
+        border-radius: 0;
+        padding: 15px;
+        font-size: 0.85rem;
+    }
+    
+    .article-detail-content blockquote {
+        margin: 15px 0;
+        padding: 12px 15px;
+        font-size: 0.95rem;
+    }
+    
+    .article-detail-tags {
+        margin-top: 25px;
+        padding-top: 20px;
+    }
+    
+    .article-tag {
+        font-size: 0.8rem;
+        padding: 5px 10px;
     }
     
     .pagination button {
@@ -1338,25 +1430,101 @@ body::before {
 /* ===== レスポンシブ対応 ===== */
 @media (max-width: 600px) {
     .article-detail-meta {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px 15px;
     }
     
     .line-add-btn {
-        margin-left: 0;
+        margin-left: auto;
     }
     
     .line-add-btn img {
-        height: 24px;
+        height: 26px;
+    }
+    
+    .reaction-status {
+        margin-top: 12px;
     }
     
     .article-reactions {
-        padding: 20px 15px;
+        padding: 20px 16px;
+        margin-top: 25px;
+        margin-left: -16px;
+        margin-right: -16px;
+        border-radius: 0;
+    }
+    
+    .reactions-header {
+        margin-bottom: 15px;
+    }
+    
+    .reactions-title {
+        font-size: 1rem;
     }
     
     .reactions-grid {
         grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+    
+    .reaction-btn {
+        padding: 12px 8px;
+    }
+    
+    .reaction-emoji-img {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .reaction-count {
+        font-size: 0.85rem;
+    }
+    
+    .reaction-status-item {
+        padding: 5px 10px;
+        font-size: 0.85rem;
+    }
+    
+    .reaction-status-icon {
+        width: 18px;
+        height: 18px;
+    }
+    
+    .reaction-floater img {
+        width: 44px;
+        height: 44px;
+    }
+}
+
+@media (max-width: 360px) {
+    .article-detail {
+        padding: 15px 12px;
+        padding-top: 50px;
+    }
+    
+    .article-detail-title {
+        font-size: 1.2rem;
+    }
+    
+    .article-detail-content {
+        font-size: 0.95rem;
+    }
+    
+    .article-detail-content img {
+        margin: 15px -12px;
+        width: calc(100% + 24px);
+        max-width: calc(100% + 24px);
+    }
+    
+    .article-reactions {
+        margin-left: -12px;
+        margin-right: -12px;
+        padding: 18px 12px;
+    }
+    
+    .reactions-grid {
         gap: 8px;
     }
     
@@ -1371,36 +1539,5 @@ body::before {
     
     .reaction-count {
         font-size: 0.8rem;
-    }
-    
-    .reaction-status-item {
-        padding: 4px 8px;
-        font-size: 0.8rem;
-    }
-    
-    .reaction-status-icon {
-        width: 16px;
-        height: 16px;
-    }
-    
-    .reaction-floater img {
-        width: 40px;
-        height: 40px;
-    }
-}
-
-@media (max-width: 360px) {
-    .reactions-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 6px;
-    }
-    
-    .reaction-btn {
-        padding: 8px 4px;
-    }
-    
-    .reaction-emoji-img {
-        width: 28px;
-        height: 28px;
     }
 }
