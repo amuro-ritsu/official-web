@@ -442,7 +442,7 @@ function openArticle(id) {
     // LINE友だち追加ボタン
     const lineButtonHtml = `
         <a href="${LINE_ADD_FRIEND_URL}" class="line-add-btn" target="_blank" rel="noopener">
-            <img src="https://scdn.line-apps.com/n/line_add_friends/btn/ja.png" alt="更新通知を受け取る" height="28" border="0">
+            <img src="line.png" alt="更新通知" height="28" border="0">
         </a>
     `;
     
