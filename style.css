@@ -1103,33 +1103,37 @@ body.no-banner .main-content {
         height: 180px;
     }
     
-    /* スマホ用モーダル - 大幅改善 */
+    /* スマホ用モーダル - 全画面表示 */
     .modal {
-        padding: 0;
+        padding: 0 !important;
+        align-items: flex-start !important;
     }
     
     .modal-content {
-        max-width: 100%;
-        width: 100%;
-        max-height: 100vh;
-        min-height: 100vh;
-        border-radius: 0;
-        margin: 0;
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: 100vh !important;
+        min-height: 100vh !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+        overflow-y: auto !important;
     }
     
     .modal-close {
-        top: 10px;
-        right: 10px;
-        width: 36px;
-        height: 36px;
-        font-size: 1.3rem;
-        position: fixed;
-        background: rgba(61, 35, 20, 0.9);
+        top: 10px !important;
+        right: 10px !important;
+        width: 40px !important;
+        height: 40px !important;
+        font-size: 1.4rem !important;
+        position: fixed !important;
+        background: rgba(61, 35, 20, 0.95) !important;
+        z-index: 1000 !important;
     }
     
     .article-detail {
-        padding: 20px 16px;
-        padding-top: 50px;
+        padding: 20px 16px !important;
+        padding-top: 60px !important;
     }
     
     .article-detail-header {
@@ -1143,8 +1147,8 @@ body.no-banner .main-content {
     }
     
     .article-detail-title {
-        font-size: 1.3rem;
-        line-height: 1.5;
+        font-size: 1.3rem !important;
+        line-height: 1.5 !important;
         margin-top: 10px;
     }
     
@@ -1154,8 +1158,8 @@ body.no-banner .main-content {
     }
     
     .article-detail-thumbnail {
-        margin: 0 -16px 20px -16px;
-        border-radius: 0;
+        margin: 0 -16px 20px -16px !important;
+        border-radius: 0 !important;
         max-height: 250px;
     }
     
@@ -1210,6 +1214,56 @@ body.no-banner .main-content {
     .pagination button {
         padding: 8px 14px;
         font-size: 0.9rem;
+    }
+    
+    /* カテゴリモーダル - スマホ全画面 */
+    #categoriesModal .modal-content,
+    #aboutModal .modal-content {
+        max-width: 100% !important;
+        width: 100% !important;
+        max-height: 100vh !important;
+        min-height: 100vh !important;
+        height: 100vh !important;
+        border-radius: 0 !important;
+        margin: 0 !important;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+        padding: 10px !important;
+    }
+    
+    .category-card {
+        padding: 15px 10px !important;
+    }
+    
+    .about-detail {
+        padding: 20px 16px !important;
+        padding-top: 60px !important;
+    }
+    
+    .about-icon {
+        width: 100px !important;
+        height: 100px !important;
+    }
+    
+    .about-name {
+        font-size: 1.3rem !important;
+    }
+    
+    .about-bio {
+        font-size: 0.95rem !important;
+    }
+    
+    .about-links {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .about-link {
+        width: 100% !important;
+        justify-content: center !important;
     }
 }
 
