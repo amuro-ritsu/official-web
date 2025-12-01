@@ -2,10 +2,15 @@
 
 // ナビゲーションを生成
 function initNavigation() {
-    const currentPage = location.pathname.split('/').pop() || 'index.html';
-    
     const header = document.querySelector('.site-header');
     if (!header) return;
+    
+    // 管理画面の場合はスキップ
+    if (header.classList.contains('admin-header') || document.querySelector('.admin-header')) {
+        return;
+    }
+    
+    const currentPage = location.pathname.split('/').pop() || 'index.html';
     
     header.innerHTML = `
         <div class="header-inner">
