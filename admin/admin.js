@@ -128,91 +128,138 @@ function initEventListeners() {
     });
     
     // 本文への画像アップロード
-    document.getElementById('uploadImageBtn').addEventListener('click', () => {
-        document.getElementById('contentImageInput').click();
-    });
-    
-    document.getElementById('contentImageInput').addEventListener('change', handleContentImageUpload);
+    const uploadImageBtn = document.getElementById('uploadImageBtn');
+    const contentImageInput = document.getElementById('contentImageInput');
+    if (uploadImageBtn && contentImageInput) {
+        uploadImageBtn.addEventListener('click', () => {
+            contentImageInput.click();
+        });
+        contentImageInput.addEventListener('change', handleContentImageUpload);
+    }
     
     // サムネイル選択
-    document.getElementById('thumbnailPreview').addEventListener('click', () => {
-        document.getElementById('thumbnailInput').click();
-    });
-    
-    document.getElementById('thumbnailInput').addEventListener('change', handleThumbnailSelect);
-    
-    document.getElementById('removeThumbnail').addEventListener('click', () => {
-        document.getElementById('thumbnailInput').value = '';
-        document.getElementById('thumbnailPreview').innerHTML = '<span>クリックして画像を選択</span>';
-        document.getElementById('removeThumbnail').style.display = 'none';
-    });
+    const thumbnailPreview = document.getElementById('thumbnailPreview');
+    const thumbnailInput = document.getElementById('thumbnailInput');
+    const removeThumbnail = document.getElementById('removeThumbnail');
+    if (thumbnailPreview && thumbnailInput) {
+        thumbnailPreview.addEventListener('click', () => {
+            thumbnailInput.click();
+        });
+        thumbnailInput.addEventListener('change', handleThumbnailSelect);
+    }
+    if (removeThumbnail) {
+        removeThumbnail.addEventListener('click', () => {
+            if (thumbnailInput) thumbnailInput.value = '';
+            if (thumbnailPreview) thumbnailPreview.innerHTML = '<span>クリックして画像を選択</span>';
+            removeThumbnail.style.display = 'none';
+        });
+    }
     
     // 公開ボタン
-    document.getElementById('publishBtn').addEventListener('click', publishArticle);
+    const publishBtn = document.getElementById('publishBtn');
+    if (publishBtn) publishBtn.addEventListener('click', publishArticle);
     
     // プレビューボタン
-    document.getElementById('previewBtn').addEventListener('click', showPreviewModal);
+    const previewBtn = document.getElementById('previewBtn');
+    if (previewBtn) previewBtn.addEventListener('click', showPreviewModal);
     
     // クリアボタン
-    document.getElementById('clearBtn').addEventListener('click', clearEditor);
+    const clearBtn = document.getElementById('clearBtn');
+    if (clearBtn) clearBtn.addEventListener('click', clearEditor);
     
     // プレビューモーダル
-    document.getElementById('previewClose').addEventListener('click', closePreviewModal);
-    document.querySelector('#previewModal .modal-overlay').addEventListener('click', closePreviewModal);
+    const previewClose = document.getElementById('previewClose');
+    const previewModalOverlay = document.querySelector('#previewModal .modal-overlay');
+    if (previewClose) previewClose.addEventListener('click', closePreviewModal);
+    if (previewModalOverlay) previewModalOverlay.addEventListener('click', closePreviewModal);
     
     // 設定保存
-    document.getElementById('saveGithubSettings').addEventListener('click', saveGithubSettings);
-    document.getElementById('saveProfileSettings').addEventListener('click', saveProfileSettings);
-    document.getElementById('saveSocialLinks').addEventListener('click', saveSocialLinks);
-    document.getElementById('saveBannerSettings').addEventListener('click', saveBannerSettings);
-    document.getElementById('saveCategorySettings').addEventListener('click', saveCategorySettings);
+    const saveGithubSettingsBtn = document.getElementById('saveGithubSettings');
+    const saveProfileSettingsBtn = document.getElementById('saveProfileSettings');
+    const saveSocialLinksBtn = document.getElementById('saveSocialLinks');
+    const saveBannerSettingsBtn = document.getElementById('saveBannerSettings');
+    const saveCategorySettingsBtn = document.getElementById('saveCategorySettings');
+    if (saveGithubSettingsBtn) saveGithubSettingsBtn.addEventListener('click', saveGithubSettings);
+    if (saveProfileSettingsBtn) saveProfileSettingsBtn.addEventListener('click', saveProfileSettings);
+    if (saveSocialLinksBtn) saveSocialLinksBtn.addEventListener('click', saveSocialLinks);
+    if (saveBannerSettingsBtn) saveBannerSettingsBtn.addEventListener('click', saveBannerSettings);
+    if (saveCategorySettingsBtn) saveCategorySettingsBtn.addEventListener('click', saveCategorySettings);
     
     // カテゴリ追加
-    document.getElementById('addCategoryBtn').addEventListener('click', addCategory);
-    document.getElementById('newCategoryName').addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') addCategory();
-    });
+    const addCategoryBtn = document.getElementById('addCategoryBtn');
+    const newCategoryName = document.getElementById('newCategoryName');
+    if (addCategoryBtn) addCategoryBtn.addEventListener('click', addCategory);
+    if (newCategoryName) {
+        newCategoryName.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') addCategory();
+        });
+    }
     
     // ヘッダーバナー
-    document.getElementById('bannerPreview').addEventListener('click', () => {
-        document.getElementById('bannerInput').click();
-    });
-    document.getElementById('bannerInput').addEventListener('change', handleBannerSelect);
-    document.getElementById('removeBanner').addEventListener('click', removeBanner);
+    const bannerPreview = document.getElementById('bannerPreview');
+    const bannerInput = document.getElementById('bannerInput');
+    const removeBannerBtn = document.getElementById('removeBanner');
+    if (bannerPreview && bannerInput) {
+        bannerPreview.addEventListener('click', () => {
+            bannerInput.click();
+        });
+        bannerInput.addEventListener('change', handleBannerSelect);
+    }
+    if (removeBannerBtn) removeBannerBtn.addEventListener('click', removeBanner);
     
     // ヘッダービデオ
-    document.getElementById('videoPreview').addEventListener('click', () => {
-        document.getElementById('videoInput').click();
-    });
-    document.getElementById('videoInput').addEventListener('change', handleVideoSelect);
-    document.getElementById('removeVideo').addEventListener('click', removeVideo);
+    const videoPreview = document.getElementById('videoPreview');
+    const videoInput = document.getElementById('videoInput');
+    const removeVideoBtn = document.getElementById('removeVideo');
+    if (videoPreview && videoInput) {
+        videoPreview.addEventListener('click', () => {
+            videoInput.click();
+        });
+        videoInput.addEventListener('change', handleVideoSelect);
+    }
+    if (removeVideoBtn) removeVideoBtn.addEventListener('click', removeVideo);
     
     // プロフィールアイコン
-    document.getElementById('selectProfileIcon').addEventListener('click', () => {
-        document.getElementById('profileIconInput').click();
-    });
-    document.getElementById('profileIconInput').addEventListener('change', handleProfileIconSelect);
+    const selectProfileIcon = document.getElementById('selectProfileIcon');
+    const profileIconInput = document.getElementById('profileIconInput');
+    if (selectProfileIcon && profileIconInput) {
+        selectProfileIcon.addEventListener('click', () => {
+            profileIconInput.click();
+        });
+        profileIconInput.addEventListener('change', handleProfileIconSelect);
+    }
     
     // ソーシャルリンク追加
-    document.getElementById('addSocialLink').addEventListener('click', addSocialLinkField);
+    const addSocialLink = document.getElementById('addSocialLink');
+    if (addSocialLink) addSocialLink.addEventListener('click', addSocialLinkField);
     
     // データエクスポート/インポート
-    document.getElementById('exportData').addEventListener('click', exportData);
-    document.getElementById('importData').addEventListener('click', () => {
-        document.getElementById('importInput').click();
-    });
-    document.getElementById('importInput').addEventListener('change', importData);
+    const exportDataBtn = document.getElementById('exportData');
+    const importDataBtn = document.getElementById('importData');
+    const importInput = document.getElementById('importInput');
+    if (exportDataBtn) exportDataBtn.addEventListener('click', exportData);
+    if (importDataBtn && importInput) {
+        importDataBtn.addEventListener('click', () => {
+            importInput.click();
+        });
+        importInput.addEventListener('change', importData);
+    }
     
     // 同期ボタン
-    document.getElementById('syncNow').addEventListener('click', syncWithGithub);
+    const syncNowBtn = document.getElementById('syncNow');
+    if (syncNowBtn) syncNowBtn.addEventListener('click', syncWithGithub);
     
     // 検索（記事一覧）
-    document.getElementById('adminSearchInput').addEventListener('input', renderAdminArticles);
-    document.getElementById('filterCategory').addEventListener('change', renderAdminArticles);
-    document.getElementById('filterStatus').addEventListener('change', renderAdminArticles);
+    const adminSearchInput = document.getElementById('adminSearchInput');
+    const filterCategory = document.getElementById('filterCategory');
+    const filterStatus = document.getElementById('filterStatus');
+    if (adminSearchInput) adminSearchInput.addEventListener('input', renderAdminArticles);
+    if (filterCategory) filterCategory.addEventListener('change', renderAdminArticles);
+    if (filterStatus) filterStatus.addEventListener('change', renderAdminArticles);
     
     // リアルタイムプレビュー
-    document.getElementById('articleContent').addEventListener('input', updateLivePreview);
+    const articleContent = document.getElementById('articleContent');
+    if (articleContent) articleContent.addEventListener('input', updateLivePreview);
 }
 
 // ===== タブ切り替え =====
